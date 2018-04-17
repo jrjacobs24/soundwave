@@ -1,0 +1,11 @@
+*** BlackLight Changelog ***
+
+2012.11.22 - version 1.0.2
+ * /includes/theme-options.php - Added Contact Form option
+ 
+2012.06.28 - version 1.0.1
+ * /functions/js/custom_uploader.js - Fixed image upload issue with WP 3.4
+ * /includes/js/upload-button.js - Fixed image upload issue with WP 3.4 
+ 
+2012.04.05 - version 1.0
+ * First release!

@@ -1,0 +1,1 @@
+[22-Jun-2013 01:13:10 America/Chicago] PHP Fatal error:  Call to undefined function get_header() in /home/thecharl/public_html/wp_soundwave/wp-content/themes/blacklight-child/index.php on line 1

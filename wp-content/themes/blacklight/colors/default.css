@@ -1,0 +1,19 @@
+/* =Color Style
+----------------------------------------------- */
+a,
+a:visited,
+a:active,
+a:hover,
+#secondary-nav .nav li a:hover,
+#secondary-nav .nav li.sfHover a,
+.entry-list .entry-meta a:hover,
+#news-ticker a,
+.entry-cat a:hover,
+footer .widget a:hover,
+#breadcrumbs a:hover {
+    color: #008AB4;
+}
+
+.widget_tag_cloud a:hover {
+    background-color: #008AB4;
+}

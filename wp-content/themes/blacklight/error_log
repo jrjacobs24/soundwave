@@ -1,0 +1,5 @@
+[06-Jul-2013 16:15:45 America/Chicago] PHP Fatal error:  Call to undefined function get_header() in /home/thecharl/public_html/wp_soundwave/wp-content/themes/blacklight/index.php on line 1
+[19-Jul-2013 20:13:24 America/Chicago] PHP Fatal error:  Call to undefined function get_header() in /home/thecharl/public_html/wp_soundwave/wp-content/themes/blacklight/index.php on line 1
+[21-Jul-2013 18:51:41 America/Chicago] PHP Fatal error:  Call to undefined function get_header() in /home/thecharl/public_html/wp_soundwave/wp-content/themes/blacklight/index.php on line 1
+[09-Sep-2013 18:30:57 America/Chicago] PHP Fatal error:  Call to undefined function get_header() in /home/thecharl/public_html/wp_soundwave/wp-content/themes/blacklight/index.php on line 1
+[19-Jan-2014 21:16:55 America/Chicago] PHP Fatal error:  Call to undefined function get_header() in /home/thecharl/public_html/wp_soundwave/wp-content/themes/blacklight/index.php on line 1

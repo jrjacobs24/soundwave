@@ -1,0 +1,657 @@
+/*
+Theme Name: BlackLight Child 
+Description: Child theme for the BlackLight theme 
+Author: Jonathon Jacobs
+Template: blacklight
+*/
+
+@import url("../blacklight/style.css");
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,700,500);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,600,700);
+
+@font-face {
+    font-family: 'AmaranthRegular';
+    src: url('fonts/amaranth/Amaranth-webfont.eot');
+    src: url('fonts/amaranth/Amaranth-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/amaranth/Amaranth-webfont.woff') format('woff'),
+         url('fonts/amaranth/Amaranth-webfont.ttf') format('truetype'),
+         url('fonts/amaranth/Amaranth-webfont.svg#AmaranthRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'OpenSansRegular';
+    src: url('fonts/opensans/OpenSans-Regular-webfont.eot');
+    src: url('fonts/opensans/OpenSans-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/opensans/OpenSans-Regular-webfont.woff') format('woff'),
+         url('fonts/opensans/OpenSans-Regular-webfont.ttf') format('truetype'),
+         url('fonts/opensans/OpenSans-Regular-webfont.svg#OpenSansRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'OpenSansSemibold';
+    src: url('fonts/opensans/OpenSans-Semibold-webfont.eot');
+    src: url('fonts/opensans/OpenSans-Semibold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/opensans/OpenSans-Semibold-webfont.woff') format('woff'),
+         url('fonts/opensans/OpenSans-Semibold-webfont.ttf') format('truetype'),
+         url('fonts/opensans/OpenSans-Semibold-webfont.svg#OpenSansSemibold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'OpenSansBold';
+    src: url('fonts/opensans/OpenSans-Bold-webfont.eot');
+    src: url('fonts/opensans/OpenSans-Bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/opensans/OpenSans-Bold-webfont.woff') format('woff'),
+         url('fonts/opensans/OpenSans-Bold-webfont.ttf') format('truetype'),
+         url('fonts/opensans/OpenSans-Bold-webfont.svg#OpenSansBold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+h2 {
+line-height: 25px;
+}
+
+/*HEADER AND LOGO*/
+header {
+height: 210px;
+width: 960px;
+margin: 0 auto;
+background: none;
+padding-top: 0px;
+}
+
+.header-ad {
+margin: 100px 0 0 0;
+height: 60px!important;
+}
+
+center {
+width: 100%;
+}
+
+#logo {
+
+float: left;
+z-index: -1000;
+}
+
+/*MAIN NAV MENU*/
+#secondary-nav .nav li.current-menu-item a, #secondary-nav .nav li.current-menu-ancestor a {
+background-color: #fff; color: #999;
+ }
+
+#secondary-nav .nav {
+background: url(http://www.soundwavecomics.com/wp-content/uploads/2013/04/NavBar.png);
+}
+
+#secondary-nav {
+margin: 0 auto;
+top: 170px;
+
+}
+
+a, a:visited, a:active, a:hover, #secondary-nav .nav li a:hover, #secondary-nav .nav li.sfHover a, .entry-list .entry-meta a:hover, #news-ticker a, .entry-cat a:hover, footer .widget a:hover {
+color: #0091d1;
+}
+
+li.current-menu-ancestor a, li.current-menu-ancestor a:visited, li.current-menu-ancestor a:link {
+text-decoration: none !important;
+}
+
+/*IMPORTANT, sets search form in the nav bar properly */
+.nav {
+overflow: visible;
+}
+
+
+.widget-container {
+list-style: none;
+padding: 15px;
+}
+
+#sidebar .widget {
+border: none;
+}
+/*MAIN MENU ITEM STYLE*/
+#secondary-nav .nav li a {
+color: #FFF;
+font-family: 'Roboto', sans-serif;
+font-size: 19px !important;
+font-weight: 500;
+z-index: 900;
+list-style: none;
+}
+
+#secondary-nav .nav li li a:hover  {
+color: #0091d1;
+}
+
+/*Gets rid of drop-down arrow for menu items with sub-items*/
+#secondary-nav .nav .sf-sub-indicator {
+display: none;
+}
+
+/* SEARCH FORM */
+#header-search {
+z-index: 1000;
+margin: 4px 4px 0 0;
+}
+
+form{
+display: inline;
+}
+
+
+/*START OF BODY*/
+
+#breadcrumbs {
+display: none;
+}
+
+h1.pagetitle, .page-title {
+padding-bottom: 10px;
+font-size: 36px;
+line-height: 1.2;
+color: #0091d1;
+border-bottom: 3px solid #222222;
+margin: 4px 0 26px 0;
+letter-spacing: -0.05em;
+}
+
+a:hover{
+border-bottom: none;
+text-decoration: underline;
+}
+.inner-wrap {
+padding: 0px;
+}
+
+.entry ul li {
+font-size: 15px;
+}
+
+h1{
+color: #0091d1;
+}
+
+body {
+background: none;
+background-color: #0091d1 !important;
+font-family:  'Open Sans', Helvetica, Arial, sans-serif;
+font-weight: 400;
+}
+
+#slider, .slides_container, .slides_container .hentry {
+height: 350px;
+}
+
+
+.slides_container {
+
+}
+
+.slides_container .entry {
+background-color: #222;
+height: 350px;
+}
+
+.slides_container .entry-thumb{
+width: 600px;
+height: 350px;
+}
+
+.slides_container .entry-title a {
+font-family: Roboto, sans-serif;
+font-size: 30px;
+color: #FFF;
+}
+
+.slides_container .entry-title a:hover {
+font-family: Roboto, sans-serif;
+font-size: 30px;
+color: #0091d1;
+text-shadow: none;
+text-decoration: none;
+}
+
+.slides_container .entry-meta {
+color: #c92027;
+font-weight: bold;
+margin: 0;
+}
+
+.entry-meta {
+color: #222;
+font-size: 15px;
+}
+
+.entry-author a {
+color: #222;
+border-bottom: none;
+}
+
+.entry-author a:hover {
+color: #0091d1;
+border-bottom: inherit;
+}
+
+.sociable_tagline{
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 16px;
+font-weight: bold;
+border-top: 3px solid #222222;
+}
+.entry-share {
+display: none;
+}
+.slides_container .entry-author a, .entry-author a:visited, a.readmore  {
+color: #c92027;
+border-bottom: none;
+line-height: 20px;
+}
+.slides_container .entry-content p {
+font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+color: #fff;
+font-weight: 400;
+font-size: 14px;
+}
+.entry h2{
+font-size: 23px;
+}
+.entry p{
+font-size: 15px;
+}
+.entry-comment a, .entry-comment a:hover, .entry-comment a:visited{
+margin-left: 5px;
+}
+.entry-comment a, .entry-comment a:visited {
+background: url(http://www.soundwavecomics.com/wp-content/themes/blacklight-child/images/icon-comment.png) no-repeat;
+opacity: 1;
+}
+.entry-comment a:hover{
+background: url(http://www.soundwavecomics.com/wp-content/themes/blacklight-child/images/icon-comment.png) no-repeat;
+opacity: 0.6;
+}
+#comment-form textarea{
+color: #444;
+}
+#slider .pagination li.current a {
+background: url(http://www.soundwavecomics.com/wp-content/themes/blacklight-child/images/icon-slider-pagination.png) no-repeat;
+}
+.single .entry-title {
+color: #c92027;
+font-size: 38px;
+line-height: 38px;
+}
+.entry-title a:hover, .slides_container .entry-author a:hover, a.readmore:hover, .widget ul li a:hover {
+background: none;
+border-bottom: none;
+text-decoration: underline;
+}
+.entry-list .entry-thumb {
+width: 290px;
+height: 185px;
+}
+.entry-img img{
+max-width: 600px;
+max-height: 400px;
+}
+.heading {
+border-top: 3px solid #222222;
+font-size: 16px;
+}
+.entry-list h2.entry-title a {
+color: #c92027;
+}
+#sidebar .widget-title {
+font-size: 14px;
+border-bottom: 3px solid #222222;
+color: #0091d1;
+background: #fff;
+margin: -7px 0 7px 0px !important;
+padding: 0 5px 0 0px !important;
+}
+iframe.youtube-player{
+max-width: 600px;
+max-height: 400px;
+}
+.widget ul li a {
+font-size: 13px;
+color: #c92027;
+}
+
+.entry-content p, label, #contact-form label {
+font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+font-weight: 400;
+color: black;
+font-size: 14px;
+}
+
+.heading-text {
+color: #0091d1;
+}
+
+.widget ul li a {
+border-bottom: none;
+text-align: left;
+text-shadow: 0 1px 0 #fff;
+}
+
+.entry-cat {
+display: none;
+}
+
+div.sociable{
+clear: both;
+}
+
+#comments .comment .col-right {
+border: #222 2px solid;
+}
+
+#comments .comment .col-left .inside {
+background: url(http://www.soundwavecomics.com/wp-content/themes/blacklight-child/images/arrow-comment.png) no-repeat right 27px;
+}
+
+#comments .comment .col-left p {
+font-weight: bold;
+}
+
+/*Full Width Post*/
+#fw-content{
+float: left;
+width: 100%;
+}
+
+/*About Us Page ID 58 */
+.page-id-58 .page-title {
+display: none;
+}
+
+.page-id-58 .entry a img {
+border: solid;
+border-width: 3px;
+border-color: #222222;
+}
+
+.page-id-58 .entry p {
+margin: 0 0 10px 0;
+font-size: 26px;
+line-height: 28px;
+text-align: left;
+}
+
+.page-id-58 .entry h1{
+padding-top: 8px;
+text-align: center;
+font-size: 40px;
+line-height: 40px;
+color: #0091d1;
+margin: 4px 0 10px 0;
+text-decoration: none !important;
+}
+
+.about-us-title{
+border-bottom: 3px solid #222222;
+}
+
+.page-id-58 #breadcrumbs {
+display: none;
+}
+
+.gregNholly{
+display: inline;
+}
+
+#ourTeam .gregNholly a:hover{
+text-decoration: none;
+}
+
+
+.hollyNsandy {
+display: inline;
+}
+
+.GregDisplay{
+}
+
+#welcome{
+font-size: 36px;
+line-height: 36px;
+}
+
+#customer-service{
+font-size: 46px;
+line-height: 46px;
+}
+
+#address{
+border-top: 3px solid #222222;
+width: 426px;
+padding-top: 25px;
+}
+
+#address h1{
+font-size:36px;
+line-height: 36px;
+}
+
+#address p{
+font-size: 30px;
+line-height: 30px;
+}
+
+#address h2{
+color: #c92027;
+font-size: 32px;
+line-height: 32px;
+}
+
+/*HELP PAGE*/
+
+article a:hover{
+border-bottom: none;
+}
+
+.page-id-292 span.embed-youtube{
+text-align: left !important;
+}
+
+/*FOOTER*/
+
+.footer-social-icons {
+border-top: 3px solid #222222;
+}
+
+.footer-social-icons a, .footer-social-icons a:visited {
+width: 190px !important;
+}
+
+.footer-social-icons .icon-twitter {
+background: url(http://www.soundwavecomics.com/wp-content/themes/blacklight-child/social-icons/Twitter-32x32.png) no-repeat 0 0;
+}
+
+.footer-social-icons .icon-facebook {
+background: url(http://www.soundwavecomics.com/wp-content/themes/blacklight-child/social-icons/Facebook-32x32.png) no-repeat 0 0;
+}
+
+.footer-social-icons .icon-instagram{
+background: url(http://www.soundwavecomics.com/wp-content/themes/blacklight-child/social-icons/Instagram-32x32.png) no-repeat 0 0;
+}
+
+.footer-social-icons .icon-youtube{
+background: url(http://www.soundwavecomics.com/wp-content/themes/blacklight-child/social-icons/YouTube-32x32.png) no-repeat 0 0;
+}
+
+li [class^="icon-"], li [class*=" icon-"] {
+display: inline-block;
+width: 1.25em;
+text-align: left !important;
+}
+
+/*COPYRIGHT*/
+.copyright {
+background: #222;
+}
+
+.copyright a, .copyright a:visited {
+border-bottom: none;
+color: #999;
+}
+
+.copyright a:hover {
+text-decoration: underline;
+}
+
+/*ACCOUNT PAGE*/
+p.description.indicator-hint{
+font-size: 10px;
+float: left;
+}
+
+input, textarea, #contact-form textarea, #contact-form input.txt {
+border-color: #222 rgb(214, 214, 214) rgb(214, 214, 214) #222;
+color: #222;
+}
+
+#user_avatar{
+float: right;
+width: 96px;
+height: 96px;
+}
+
+#author_info{
+min-height: 96px;
+}
+
+select#display_name{
+border-color: #222 rgb(214, 214, 214) rgb(214, 214, 214) #222;
+}
+
+
+/*PULL LIST*/
+
+.iphorm-labels-above > .iphorm-element-spacer > label{
+font-size: 16px;
+font-weight: bold;
+color: #444;
+}
+
+.iphorm-submit-wrap button span{
+padding: 0px;
+background: none;
+border: none;
+}
+
+p#thank_you{
+font-size: 21px;
+font-family: inherit;
+line-height: 21px;
+float:left;
+margin-top: 10px;
+float: left;
+}
+
+
+#cl_check_545{
+width: 13px !important;
+}
+
+p#gasp_p{
+font-family: 'OpenSansRegular',Helvetica,Arial,sans-serif !important;
+font-size: 14px !important;
+color: black !important;
+}
+
+/*
+--- Lists --------------------------------
+**/
+
+.entry ul li {
+    background: none;
+}
+
+/*
+--- Profile Forms --------------------------------
+**/
+
+.form-submit {
+    text-align: center;
+}
+
+.wppb-user-forms ul li h4 {
+    font-size: 18px;
+}
+
+
+.btn,
+.btn-primary,
+input[type="submit"],
+.iphorm-submit-wrap button em,
+input.button-primary, 
+.submit-button, 
+.submit-button:visited, 
+input#wp-submit, 
+.button_submit {
+    background: #c92027;
+    border-color: transparent;
+    color: #ffffff;
+    display: inline-block;
+    font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    padding: 12px 24px 12px 24px;
+    text-decoration: none;
+}
+
+
+.btn:hover,
+.btn-primary:hover,
+input[type="submit"]:hover,
+.iphorm-submit-wrap button em:hover,
+input.button-primary:hover, 
+.submit-button:hover, 
+.submit-button:visited, 
+input#wp-submit:hover, 
+.button_submit:hover {
+    background: #8f1319;
+  text-decoration: none;
+}
+
+.btn:active,
+.btn-primary:active,
+input[type="submit"]:active,
+.iphorm-submit-wrap button em:active,
+input.button-primary:active, 
+.submit-button:active, 
+.submit-button:visited:active, 
+input#wp-submit:active, 
+.button_submit:active {
+    position: relative;
+    top: 1px;
+}
+
+.iphorm-submit-input-wrap {
+    float: none;
+    text-align: center;
+}
+
+.iphorm-submit-wrap button span {
+
+}
