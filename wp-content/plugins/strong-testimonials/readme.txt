@@ -2,8 +2,9 @@
 Contributors: cdillon27
 Tags: testimonials, testimonial slider, testimonial form, reviews, star ratings
 Requires at least: 3.7
-Tested up to: 4.9.5
-Stable tag: 2.30.5
+Requires PHP: 5.2.4
+Tested up to: 4.9
+Stable tag: 2.32
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -21,7 +22,7 @@ In just a few steps, you will be collecting and publishing your testimonials or 
 * A front-end form
 * Custom fields
 * Star ratings
-* Slider with several navigation options
+* Slider & carousel with several navigation options
 * Grids and Masonry
 * Ready for translation with [WPML](https://wpml.org/), [Polylang](https://wordpress.org/plugins/polylang/), and [WPGlobus](https://wordpress.org/plugins/wpglobus/)
 
@@ -74,11 +75,28 @@ A variety of templates are included that work well in most themes.
 
 For ultimate control and seamless integration, copy any template to your theme and customize it.
 
-Use the template function to display a view in your template file:
+The template function will add a view to your custome theme templates:
 
 `<?php if ( function_exists( 'strong_testimonials_view' ) ) {
     strong_testimonials_view( $id );
 } ?>`
+
+### Privacy and GDPR
+
+By default, this plugin:
+
+* does not store any user or visitor data,
+* does not send any data to remote servers, act as a service or embed content,
+* does not edit the comments form in any way.
+
+The plugin also prevents displaying email addresses in your testimonials on the front end.
+
+However, this plugin provides features that may involve private data.
+
+* If you use the testimonial submission form, the data collected on that form will be stored in your database.
+* If you enable the administrator notification email upon new testimonial submission, the data collected on your form, at your selection, may be included in that notification email.
+* If you enable comments on testimonials, the plugin will use your theme's single post template and comment form.
+* If you embed third-party posts such as Twitter, YouTube and FaceBook in your testimonials, you will be agreeing to the Terms of Use of those third-party sites.
 
 ### Pro Add-ons
 
@@ -136,6 +154,12 @@ Activate the plugin. Look for "Testimonials" in the admin menu.
 
 `Read some of our [testimonial_count] testimonials!`
 
+[testimonial_average_rating] - To display the average rating of all your testimonials. Includes stars!
+
+= Can I show more than one testimonial in the slider (i.e. a carousel)? =
+
+Yes. you can show 1, 2 or 3 at a time and you can scroll 1, 2 or 3 at a time.
+
 = Can I add testimonials from YouTube, Twitter, Instagram and Facebook? =
 
 Yes. The plugin supports the [WordPress embed](https://codex.wordpress.org/Embeds) feature for inserting testimonials from [these sources](https://codex.wordpress.org/Embeds#Does_This_Work_With_Any_URL.3F).
@@ -168,19 +192,15 @@ Yes. This requires a lightbox so if your theme does not include one, you will ne
 
 No. If you already have testimonials in another plugin or theme, you will have to re-enter them. Why? Because every theme and plugin stores data differently.
 
-= Can I import my existing testimonials? =
-
-It depends. The plugin does not provide an import tool because every situation is different. With some technical skills, you may be able to successfully export your existing testimonials to a CSV file and import them into Strong Testimonials. Contact me if you want help with that. Otherwise, it may be simpler and easier to migrate them manually.
-
 = Is it true that including a link to my site in my support requests really helps you troubleshoot problems? =
 
 Undeniably, yes.
 
 This [screenshot](http://www.screencast.com/t/TPMRWM0yug) shows where I immediately start looking for clues before asking for more information and potentially waiting hours or days for a response (it happens).
 
-I can determine what theme you're using, what plugins are active, whether you're using any caching/minification/optimization (do you need to clear your cache?), if there are any JavaScript errors in your theme or another plugin (more common than you may think), and somewhat how the testimonial view is configured.
+I can usually determine what theme you're using, what plugins are active, whether you're using any caching/minification/optimization (do you need to clear your cache?), if there are any JavaScript errors in your theme or another plugin (more common than you may think), and somewhat how the testimonial view is configured.
 
-If you prefer not to post your URL publicly, start a private support ticket at [support.strongplugins.com](https://support.strongplugins.com).
+If you prefer, start a private support ticket at [support.strongplugins.com](https://support.strongplugins.com).
 
 == Screenshots ==
 
@@ -195,67 +215,69 @@ If you prefer not to post your URL publicly, start a private support ticket at [
 
 == Changelog ==
 
-= 2.30.5 - April 9, 2018 =
-* Fix bug when email field is not required.
-* Fix display of templates in view editor when theme/add-on templates are present.
-* Fix inconsistent use of filter on default view settings.
-* Improve compatibility with themes and thumbnail column in admin list.
-* Improve compatibility with installation scripts (table creation).
-* Improve check for missing add-on license.
-* Add front-end "Nothing found" message for administrators.
-* Add data attribute 'count' for found_posts to view container for troubleshooting.
-* Add filter on `[testimonial_count]` shortcode defaults.
-* Add ability to capture notification email on localhost.
-* Revive a logger class.
-* Minor admin UI tweaks.
+= 2.32 - Aug 6, 2018 =
+* Add carousel option.
+* Add filters to form field classes.
 
-= 2.30.4 - Mar 20, 2018 =
-* Fix bug in slider in Firefox 59.
+= 2.31.10 - Aug 2, 2018 =
+* Fix singular/plural phrases in testimonial average shortcode.
+* Fix bug in scroll to success message.
+* Fix RTL slider controls.
+* Attempt to fix slider touch problems in iOS.
 
-= 2.30.3 - Mar 16, 2018 =
-* Improve slider script compatibility (event propagation).
+= 2.31.9 - July 17, 2018 =
+* Fix compatbility issue with Gutenberg.
+* Fix bug in average rating calculation.
+* Fix CSS columns for recent browser updates.
+* Fix bug in lazy-loading compatibility option.
+* Improve theme compatibility.
+* Add filter on form submit button CSS class.
 
-= 2.30.2 - Mar 11, 2018 =
-* Fix backwards-compatibility for WordPress versions 4.5 and older.
+= 2.31.8 - June 16, 2018 =
+* Fix "wait" spinner in unstyled form template.
+* On forms, only show required symbol if field label is shown.
+* Refactor inline style method.
+* Improve exception handling.
 
-= 2.30.1 - Mar 6, 2018 =
-* Fix minor bug in PHP7 compatibility.
-* Improve real-time validation in fields editor.
-* Minor CSS fixes.
+= 2.31.7 - June 7, 2018 =
+* Fix JavaScript incompatibility in IE and Edge.
 
-= 2.30.0 - Feb 10, 2018 =
-* Add option for font color in view editor.
-* Add option for a custom CSS class on the image link for lightboxes.
-* Add shortcode attributes for post_ids, category, order, and count.
-* Use `is_email()` to validate email addresses.
-* Use `number_format_i18n()` in testimonial_count shortcode.
-* Refactor template groups into base templates with options.
-* Add option to disable touch swipe navigation in slideshows.
-* Simplify slideshow CSS.
-* Fix bug in slider script in Chrome.
+= 2.31.6 - June 2, 2018 =
+* Fix bug when adding a custom field in view editor.
 
+= 2.31.5 - June 1, 2018 =
+* Fix XSS vulnerablilities reported by DefenseCode using Thunderscan.
+* Add spinner UI element while form is being submitted to deter visitor from navigating away.
+* Minor admin UI improvements.
 
-= 2.29.1 - Jan 8, 2018 =
-* Only to trigger update because the SVN version was incomplete.
+= 2.31.4 - May 22, 2018 =
+* Add integration with WordPress privacy exporter and eraser features.
 
-= 2.29 - Jan 8, 2018 =
-* Add integration with Google Captcha by BestWebSoft.
-* Remove integration with Captcha plugin.
-* Remove integration with Advanced noCaptcha reCaptcha plugin.
-* Fix CSS conflict with Cherry Slider.
-* Fix bug when adding the category field to the notification email.
-* Fix read-more filter usage for WPML and Polylang.
-* Add filter: `wpmtst_read_more_page_output`.
-* Add support for FooBox Image Lightbox.
-* Improved the notification email admin UI.
-* Handle form submission on custom action.
-* Add dismissible persistent admin notice capability.
-* Improve add-on configuration check.
-* Minor refactoring for improved performance.
+= 2.31.3 - May 19, 2018 =
+* Fix missing submit button.
+
+= 2.31.2 - May 18, 2018 =
+* Fix bug in average rating half-star.
+
+= 2.31.1 - May 15, 2018 =
+* Fix conflict with Review Markup add-on.
+
+= 2.31 - May 15, 2018 =
+* Add `[testimonial_average_rating]` shortcode.
+* Add compatibility option for script controller.
+* Add compatibility option for lazy loading images.
+* Minor template style tweaks for small screens.
+* Use empty star icon instead of full icon in different color.
+* Change default message "Required field" to "Required".
+* Improve exception handling.
+* Improve Pjax compatibility.
+* Apply JavaScript coding standard.
+* Add console logging for slider when `SCRIPT_DEBUG` enabled.
+* Minor admin style tweaks.
 
 See changelog.txt for previous versions.
 
 == Upgrade Notice ==
 
-= 2.30.5 =
-Better template options. Improved compatibility. Minor bug fixes.
+= 2.32 =
+New feature: Show multiple slides at the same time in a carousel.

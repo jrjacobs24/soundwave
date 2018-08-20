@@ -18,7 +18,7 @@ function wppb_autologin_after_password_changed(){
                 require_once( WPPB_PLUGIN_DIR.'/front-end/extra-fields/extra-fields.php' );
 
             /* we get the form_name through $_POST so we can apply correctly the filter so we generate the correct fields in the current form  */
-            $form_fields = apply_filters( 'wppb_change_form_fields', get_option( 'wppb_manage_fields' ), array( 'form_type'=> 'edit_profile', 'form_fields' => array(), 'form_name' => $_POST['form_name'], 'role' => '', 'ID' => Profile_Builder_Form_Creator::wppb_get_form_id_from_form_name( $_POST['form_name'], 'edit_profile' ) ) );
+            $form_fields = apply_filters( 'wppb_change_form_fields', get_option( 'wppb_manage_fields' ), array( 'form_type'=> 'edit_profile', 'form_fields' => array(), 'form_name' => sanitize_text_field( $_POST['form_name'] ), 'role' => '', 'ID' => Profile_Builder_Form_Creator::wppb_get_form_id_from_form_name( sanitize_text_field( $_POST['form_name'] ), 'edit_profile' ), 'context' => 'edit_profile_auto_login_after_password_change' ) );
             if( !empty( $form_fields ) ){
 
                 /* check for errors in the form through the filters */
@@ -35,7 +35,7 @@ function wppb_autologin_after_password_changed(){
                     $user_id = get_current_user_id();
                     if( ( !is_multisite() && current_user_can( 'edit_users' ) ) || ( is_multisite() && current_user_can( 'manage_network' ) ) ) {
                         if( isset( $_GET['edit_user'] ) && ! empty( $_GET['edit_user'] ) ){
-                            $user_id = $_GET['edit_user'];
+                            $user_id = absint( $_GET['edit_user'] );
                         }
                     }
 
@@ -50,11 +50,20 @@ function wppb_autologin_after_password_changed(){
                         $default_cookie_life = apply_filters('auth_cookie_expiration', (2 * DAY_IN_SECONDS), $user_id, false);
                         $remember = (($logged_in_cookie['expiration'] - time()) > $default_cookie_life);
 
-                        wp_set_auth_cookie($user_id, $remember);
+                        wp_set_auth_cookie($user_id, $remember, '', wp_get_session_token() );
                     }
                     else{
                         wp_set_password($_POST['passw1'], $user_id);
                     }
+
+                    /* log out of other sessions or all sessions if the admin is editing the profile */
+                    $sessions = WP_Session_Tokens::get_instance( $user_id );
+                    if ( $user_id === get_current_user_id() ) {                        
+                        $sessions->destroy_others( wp_get_session_token() );
+                    } else {                        
+                        $sessions->destroy_all();                        
+                    }
+                    
                 }
             }
         }
@@ -66,18 +75,7 @@ function wppb_front_end_profile_info( $atts ){
 	// get value set in the shortcode as parameter, still need to default to something else than empty string
 	extract( shortcode_atts( array( 'form_name' => 'unspecified', 'redirect_url' => '', 'redirect_priority' => 'normal' ), $atts, 'wppb-edit-profile' ) );
 
-	if( PROFILE_BUILDER == 'Profile Builder Pro' ) {
-		$wppb_module_settings = get_option( 'wppb_module_settings' );
+    $form = new Profile_Builder_Form_Creator( array( 'form_type' => 'edit_profile', 'form_name' => $form_name, 'redirect_url' => $redirect_url, 'redirect_priority' => $redirect_priority ) );
 
-		if( isset( $wppb_module_settings['wppb_customRedirect'] ) && $wppb_module_settings['wppb_customRedirect'] == 'show' && $redirect_priority != 'top' && function_exists( 'wppb_custom_redirect_url' ) ) {
-			$redirect_url = wppb_custom_redirect_url( 'after_edit_profile', $redirect_url );
-		}
-	}
-	$redirect_url = apply_filters( 'wppb_after_edit_profile_redirect_url', $redirect_url );
-
-	global $$form_name;
-
-    $$form_name = new Profile_Builder_Form_Creator( array( 'form_type' => 'edit_profile', 'form_name' => $form_name, 'redirect_url' => $redirect_url, 'redirect_priority' => $redirect_priority ) );
-
-    return $$form_name;
+    return $form;
 }

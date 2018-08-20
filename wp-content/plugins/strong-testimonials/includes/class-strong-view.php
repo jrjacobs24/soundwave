@@ -44,6 +44,14 @@ class Strong_View {
 	public $plugin_version;
 
 	/**
+	 * The stylesheet handle. For adding inline style.
+	 *
+	 * @since 2.31.8
+	 * @var string
+	 */
+	public $stylesheet;
+
+	/**
 	 * Strong_View constructor.
 	 *
 	 * @param array $atts
@@ -193,6 +201,7 @@ class Strong_View {
 		$stylesheet = WPMST()->templates->get_template_attr( $this->atts, 'stylesheet', false );
 		if ( $stylesheet ) {
 			$handle = 'testimonials-' . str_replace( ':', '-', $this->atts['template'] );
+			$this->set_stylesheet( $handle );
 			wp_register_style( $handle, $stylesheet, array(), $this->plugin_version );
 			if ( $enqueue ) {
 				WPMST()->render->add_style( $handle );
@@ -256,7 +265,8 @@ class Strong_View {
 		$this->custom_font_color();
 
 		/**
-		 * Hook to add more inline style to `wpmtst-custom-style` handle.
+		 * Hook to add more inline style.
+		 *
 		 * @since 2.22.0
 		 */
 		do_action( 'wpmtst_view_custom_style', $this );
@@ -288,13 +298,14 @@ class Strong_View {
 
 		if ( $c1 ) {
 			$view_el = ".strong-view-id-{$this->atts['view']}";
+			$handle = $this->get_stylesheet();
 
 			if ( $this->is_form() ) {
-				wp_add_inline_style( 'wpmtst-custom-style',
+				wp_add_inline_style( $handle,
 				                     "$view_el .strong-form-inner { color: $c1; }" );
 			}
 			else {
-				wp_add_inline_style( 'wpmtst-custom-style',
+				wp_add_inline_style( $handle,
 				                     "$view_el .testimonial-heading, " .
 				                     "$view_el .testimonial-content p, " .
 				                     "$view_el .testimonial-content a.readmore, " .
@@ -313,6 +324,7 @@ class Strong_View {
 			return;
 		}
 
+		$handle = $this->get_stylesheet();
 		$c1 = '';
 		$c2 = '';
 
@@ -348,34 +360,33 @@ class Strong_View {
 			$gradient = self::gradient_rules( $c1, $c2 );
 
 			if ( $this->is_form() ) {
-				wp_add_inline_style( 'wpmtst-custom-style',
-				                     "$view_el .strong-form-inner { $gradient }" );
-			}
-			else {
-				wp_add_inline_style( 'wpmtst-custom-style',
-				                     "$view_el .testimonial-inner { $gradient }" );
+
+				wp_add_inline_style( $handle, "$view_el .strong-form-inner { $gradient }" );
+
+			} else {
+
+				wp_add_inline_style( $handle, "$view_el .testimonial-inner { $gradient }" );
 
 				if ( 'bold' == WPMST()->atts( 'template' ) ) {
-					wp_add_inline_style( 'wpmtst-custom-style',
-					                     "$view_el .readmore-page { background: $c2 }" );
+					wp_add_inline_style( $handle, "$view_el .readmore-page { background: $c2 }" );
 				}
+
 			}
 
-		}
-		elseif ( $c1 ) {
+		} elseif ( $c1 ) {
 
 			if ( $this->is_form() ) {
-				wp_add_inline_style( 'wpmtst-custom-style',
-				                     "$view_el .strong-form-inner { background: $c1; }" );
-			}
-			else {
-				wp_add_inline_style( 'wpmtst-custom-style',
-				                     "$view_el .testimonial-inner { background: $c1; }" );
+
+				wp_add_inline_style( $handle, "$view_el .strong-form-inner { background: $c1; }" );
+
+			} else {
+
+				wp_add_inline_style( $handle, "$view_el .testimonial-inner { background: $c1; }" );
 
 				if ( 'bold' == WPMST()->atts( 'template' ) ) {
-					wp_add_inline_style( 'wpmtst-custom-style',
-					                     "$view_el .readmore-page { background: $c1 }" );
+					wp_add_inline_style( $handle, "$view_el .readmore-page { background: $c1 }" );
 				}
+
 			}
 
 		}
@@ -414,6 +425,14 @@ class Strong_View {
 				}
 			}
 		}
+	}
+
+	public function set_stylesheet( $handle = '' ) {
+		$this->stylesheet = $handle;
+	}
+
+	public function get_stylesheet() {
+		return $this->stylesheet;
 	}
 
 }

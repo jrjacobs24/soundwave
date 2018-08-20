@@ -7,6 +7,12 @@ Array.max = function (array) {
   return Math.max.apply(Math, array);
 };
 
+(function ($) {
+  $.fn.showInlineBlock = function () {
+    return this.css('display', 'inline-block');
+  };
+})(jQuery);
+
 /**
  * jQuery alterClass plugin
  *
@@ -101,10 +107,26 @@ Array.max = function (array) {
 }(jQuery));
 
 /**
- * Masonry in the Layout section.
+ * Remove 'result' query argument.
+ */
+removeResultArg = function () {
+  var urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has('result')) {
+    urlParams.delete('result');
+    var newURL = window.location.pathname;
+    if (urlParams.toString()) {
+      newURL = newURL + '?' + urlParams.toString();
+    }
+    window.history.replaceState({}, document.title, newURL);
+  }
+};
+
+/**
+ * Initial actions on document.ready
  */
 jQuery(document).ready(function ($) {
-  // Masonry
+
+  // Masonry in the Layout section
   $('.view-layout-masonry .example-container')
     .find('.box')
     .width(jQuery('.grid-sizer').width())
@@ -113,6 +135,8 @@ jQuery(document).ready(function ($) {
 
   // Category select width
   $.fn.afterToggle();
+
+  removeResultArg();
 });
 
 (function ($) {
@@ -189,7 +213,7 @@ jQuery(document).ready(function ($) {
    * Restore defaults
    */
   // TODO i18n
-  $('#restore-defaults').click(function () {
+  $('#restore-defaults').on('click', function () {
     return confirm('Restore the default settings?');
   });
 
@@ -874,7 +898,7 @@ jQuery(document).ready(function ($) {
   /**
    * Add client field
    */
-  $('#add-field').click(function (e) {
+  $('#add-field').on('click', function (e) {
     var keys = $('.field3').map(function () {
       return $(this).data('key');
     }).get();
@@ -884,11 +908,10 @@ jQuery(document).ready(function ($) {
       'key': nextKey,
     };
     $.get(ajaxurl, data, function (response) {
-      //customFieldList.append( response ).find("#field-"+nextKey+" span.link").click();
       $.when(customFieldList.append(response)).then(function () {
         var $newField = customFieldList.find('#field-' + nextKey);
         $newField
-          .find('span.link').click().end()
+          .find('div.link').click().end()
           .find('.field-dep').hide().end()
           .find('.first-field').focus();
       });
@@ -1077,14 +1100,62 @@ jQuery(document).ready(function ($) {
     e.preventDefault();
   });
 
-  customFieldList.on('click', 'span.link', function (e) {
+  customFieldList.on('click', 'div.link', function (e) {
     $(this)
       .closest('.field2')
       .toggleClass('open')
       .find('.field-properties')
-      .slideToggle();
+      .slideToggle(100);
     return false;
   });
+
+  /**
+   * Slider|Carousel change listener
+   */
+  var $maxSlides = $('#view-max_slides');
+  var $effect = $('#view-effect');
+  var $position = $('view-slideshow_nav_position');
+
+  var maxSlidesUpdate = function () {
+    var maxSlidesValue = parseInt($maxSlides.val());
+    if (maxSlidesValue > 1) {
+      $effect.find('option[value=\'horizontal\']').prop('selected', true);
+      $position.find('option[value=\'outside\']').prop('selected', true);
+
+      $maxSlides.siblings('.option-desc.singular').hide();
+      $maxSlides.siblings('.option-desc.plural').showInlineBlock();
+    } else {
+      $maxSlides.siblings('.option-desc.singular').showInlineBlock();
+      $maxSlides.siblings('.option-desc.plural').hide();
+    }
+
+    $effect.change();
+    $position.change();
+  };
+
+  maxSlidesUpdate();
+
+  $maxSlides.on('change', maxSlidesUpdate);
+
+  /**
+   * MoveSlides change listener
+   */
+  var $moveSlides = $('#view-move_slides');
+
+  var moveSlidesUpdate = function () {
+    var moveSlidesValue = parseInt($moveSlides.val());
+    if (moveSlidesValue > 1) {
+      $moveSlides.siblings('.option-desc.singular').hide();
+      $moveSlides.siblings('.option-desc.plural').showInlineBlock();
+    } else {
+      $moveSlides.siblings('.option-desc.singular').showInlineBlock();
+      $moveSlides.siblings('.option-desc.plural').hide();
+    }
+  };
+
+  moveSlidesUpdate();
+
+  $moveSlides.on('change', moveSlidesUpdate);
 
 })(jQuery);
 

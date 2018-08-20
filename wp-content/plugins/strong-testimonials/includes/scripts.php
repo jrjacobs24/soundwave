@@ -35,8 +35,12 @@ function wpmtst_scripts() {
 	 *
 	 * Remember: array top level is converted to strings!
 	 */
-	$ajax  = $compat_options['ajax'];
+	$ajax       = $compat_options['ajax'];
+	$controller = $compat_options['controller'];
+
+	//TODO Use defaults + array_merge instead
 	$parms = array(
+	    'initializeOn'   => isset( $controller['initialize_on'] ) ? $controller['initialize_on'] : '',
 		'method'         => isset( $ajax['method'] ) ? $ajax['method'] : '',
 		'universalTimer' => isset( $ajax['universal_timer'] ) ? $ajax['universal_timer'] * 1000 : 0,
 		'observerTimer'  => isset( $ajax['observer_timer'] ) ? $ajax['observer_timer'] * 1000 : 0,
@@ -44,7 +48,7 @@ function wpmtst_scripts() {
 		'script'         => isset( $ajax['script'] ) ? $ajax['script'] : '',
 		'containerId'    => isset( $ajax['container_id'] ) ? $ajax['container_id'] : '',
 		'addedNodeId'    => isset( $ajax['addednode_id'] ) ? $ajax['addednode_id'] : '',
-		'debug'          => false,
+		'debug'          => defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG,
 	);
 	wp_localize_script( 'wpmtst-controller', 'strongControllerParms', $parms );
 
@@ -64,11 +68,6 @@ function wpmtst_scripts() {
 	                    array( 'jquery', 'imagesloaded' ),
 	                    false,
 	                    true );
-
-	/**
-	 * View custom style
-	 */
-	wp_register_style( 'wpmtst-custom-style', WPMTST_PUBLIC_URL . 'css/custom.css' );
 
 	/**
 	 * imagesLoaded, if less than WordPress 4.6
@@ -145,15 +144,23 @@ function wpmtst_scripts() {
 	 */
 	$locale = get_locale();
 	if ( 'en_US' != $locale ) {
+
 		$lang_parts = explode( '_', $locale );
-		$lang_file  = 'js/lib/validate/localization/messages_' . $lang_parts[0] . '.min.js';
-		if ( file_exists( WPMTST_PUBLIC . $lang_file ) ) {
-			wp_register_script( 'wpmtst-validation-lang',
-			                    WPMTST_PUBLIC_URL . $lang_file,
-			                    array( 'wpmtst-validation-plugin' ),
-			                    false,
-			                    true );
+
+		$lang_files = array(
+			'messages_' . $locale . '.min.js',
+			'messages_' . $lang_parts[0] . '.min.js',
+		);
+
+		foreach ( $lang_files as $file ) {
+			$path = WPMTST_PUBLIC . 'js/lib/validate/localization/' . $file;
+			$url  = WPMTST_PUBLIC_URL . 'js/lib/validate/localization/' . $file;
+			if ( file_exists( $path ) ) {
+				wp_register_script( 'wpmtst-validation-lang', $url, array( 'wpmtst-validation-plugin' ), false, true );
+				break;
+			}
 		}
+
 	}
 
 	/**

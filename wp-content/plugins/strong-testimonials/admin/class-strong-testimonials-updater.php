@@ -182,6 +182,11 @@ class Strong_Testimonials_Updater {
 		}
 
 		/**
+		 * Fix add-ons.
+		 */
+		$this->update_addons();
+
+		/**
 		 * Update the plugin version.
 		 */
 		update_option( 'wpmtst_plugin_version', WPMTST_VERSION );
@@ -192,6 +197,23 @@ class Strong_Testimonials_Updater {
 		$this->update_log();
 
 		delete_transient( 'wpmtst_update_in_progress' );
+	}
+
+	/**
+	 * Fix add-on file names.
+	 *
+	 * @since 2.30.9
+	 */
+	public function update_addons() {
+		$addons = get_option( 'wpmtst_addons' );
+		if ( $addons ) {
+			foreach ( $addons as $addon => $data ) {
+				if ( isset( $addons[ $addon ]['file'] ) ) {
+					$addons[ $addon ]['file'] = plugin_basename( basename( $data['file'], '.php' ) . '/' . basename( $data['file'] ) );
+				}
+			}
+			update_option( 'wpmtst_addons', $addons );
+		}
 	}
 
 	/**
@@ -365,35 +387,15 @@ class Strong_Testimonials_Updater {
 	}
 
 	/**
-	 * Custom fields
+	 * Default custom fields.
+	 *
+	 * @since 2.31.0 There is a rare bug/conflict where the default fields are incomplete.
+	 *               Overwrite existing fields on every update to auto-repair.
 	 *
 	 * @return array
 	 */
 	public function update_fields() {
-		$fields = get_option( 'wpmtst_fields', array() );
-		if ( ! $fields ) {
-			return Strong_Testimonials_Defaults::get_fields();
-		}
-
-		/**
-		 * Updating from 1.x
-		 *
-		 * Copy current custom fields to the new default custom form which will be added in the next step.
-		 *
-		 * @since 2.0.1
-		 * @since 2.17 Added version check.
-		 */
-		if ( version_compare( '2.0', $this->old_version ) ) {
-			if ( isset( $fields['field_groups'] ) ) {
-				$default_custom_forms[1]['fields'] = $fields['field_groups']['custom']['fields'];
-				unset( $fields['field_groups'] );
-			}
-			if ( isset( $fields['current_field_group'] ) ) {
-				unset( $fields['current_field_group'] );
-			}
-		}
-
-		return $fields;
+		return Strong_Testimonials_Defaults::get_fields();
 	}
 
 	/**
@@ -548,10 +550,16 @@ class Strong_Testimonials_Updater {
 		 * Merge in new options.
 		 */
 		$defaults = Strong_Testimonials_Defaults::get_form_options();
+
 		$form_options = array_merge( $defaults, $form_options );
+
 		// Merge nested arrays individually. Don't use array_merge_recursive.
+
 		$form_options['default_recipient'] = array_merge( $defaults['default_recipient'], $form_options['default_recipient'] );
-		$form_options['messages'] = array_merge( $defaults['messages'], $form_options['messages'] );
+
+		foreach ( $defaults['messages'] as $key => $message ) {
+			$form_options['messages'][ $key ] = array_merge( $message, $form_options['messages'][ $key ] );
+		}
 
 		/**
 		 * Convert Captcha plugin name.
@@ -621,9 +629,39 @@ class Strong_Testimonials_Updater {
 
 		// Merge in new options.
 		$defaults = Strong_Testimonials_Defaults::get_compat_options();
+
 		// Merge nested arrays individually. Don't use array_merge_recursive.
-		$options['ajax'] = array_merge( $defaults['ajax'], $options['ajax'] );
-		$options         = array_merge( $defaults, $options );
+
+		if ( isset( $options['controller'] ) ) {
+			$options['ajax'] = array_merge( $defaults['ajax'], $options['ajax'] );
+		} else {
+			$options['ajax'] = $defaults['ajax'];
+		}
+
+		/**
+		 * Controller
+		 *
+		 * @since 2.31.0
+		 */
+		if ( isset( $options['controller'] ) ) {
+			$options['controller'] = array_merge( $defaults['controller'], $options['controller'] );
+		} else {
+			$options['controller'] = $defaults['controller'];
+		}
+
+		/**
+		 * Lazy load
+		 *
+		 * @since 2.31.0
+		 */
+		if ( isset( $options['lazyload'] ) ) {
+			// first level only: enabled, classes (array)
+			$options['lazyload'] = array_merge( $defaults['lazyload'], $options['lazyload'] );
+		} else {
+			$options['lazyload'] = $defaults['lazyload'];
+		}
+
+		$options = array_merge( $defaults, $options );
 
 		return $options;
 	}

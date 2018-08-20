@@ -1,6 +1,6 @@
 <?php
 
-if ( !class_exists( 'PolldaddyShortcode' ) ) {
+if ( ! class_exists( 'PolldaddyShortcode' ) ) {
 	/**
 * Class wrapper for polldaddy shortcodes
 */
@@ -76,13 +76,13 @@ CONTAINER;
 
 	/*
 	 * Polldaddy Poll Embed script - transforms code that looks like that:
-	 * <script type="text/javascript" charset="utf-8" src="http://static.polldaddy.com/p/123456.js"></script>
+	 * <script type="text/javascript" charset="utf-8" async src="http://static.polldaddy.com/p/123456.js"></script>
 	 * <noscript><a href="http://polldaddy.com/poll/123456/">What is your favourite color?</a></noscript>
 	 * into the [polldaddy poll=...] shortcode format
 	 */
 	function polldaddy_embed_to_shortcode( $content ) {
 
-		if ( false === strpos( $content, 'polldaddy.com/p/' ) ) {
+		if ( ! is_string( $content ) || false === strpos( $content, 'polldaddy.com/p/' ) ) {
 			return $content;
 		}
 
@@ -221,7 +221,7 @@ CONTAINER;
 <script type="text/javascript" charset="UTF-8"><!--//--><![CDATA[//><!--
 PDRTJS_settings_{$rating}{$item_id}={$settings};
 //--><!]]></script>
-<script type="text/javascript" charset="UTF-8" src="{$rating_js_file}"></script>
+<script type="text/javascript" charset="UTF-8" async src="{$rating_js_file}"></script>
 SCRIPT;
 			} else {
 				if ( false === self::$scripts ) {
@@ -338,7 +338,7 @@ SCRIPT;
 <a id="pd_a_{$poll}"></a>
 <div class="PDS_Poll" id="PDI_container{$poll}" style="display:inline-block;{$float}{$margins}"></div>
 <div id="PD_superContainer"></div>
-<script type="text/javascript" charset="UTF-8" src="{$poll_js}{$cb}"></script>
+<script type="text/javascript" charset="UTF-8" async src="{$poll_js}{$cb}"></script>
 <noscript>{$poll_link}</noscript>
 CONTAINER;
 					}
@@ -496,13 +496,13 @@ CONTAINER;
 				foreach( self::$scripts['rating'] as $rating ) {
 					$script .= "PDRTJS_settings_{$rating['id']}{$rating['item_id']}={$rating['settings']}; if ( typeof PDRTJS_RATING !== 'undefined' ){if ( typeof PDRTJS_{$rating['id']}{$rating['item_id']} == 'undefined' ){PDRTJS_{$rating['id']}{$rating['item_id']} = new PDRTJS_RATING( PDRTJS_settings_{$rating['id']}{$rating['item_id']} );}}";
 				}
-				$script .= "\n//--><!]]></script><script type='text/javascript' charset='UTF-8' src='{$rating_js_file}'></script>";
+				$script .= "\n//--><!]]></script><script type='text/javascript' charset='UTF-8' async src='{$rating_js_file}'></script>";
 
 			}
 
 			if ( isset( self::$scripts['poll'] ) ) {
 				foreach( self::$scripts['poll'] as $poll ) {
-					$script .= "<script type='text/javascript' charset='UTF-8' src='{$poll['url']}'></script>";
+					$script .= "<script type='text/javascript' charset='UTF-8' async src='{$poll['url']}'></script>";
 				}
 			}
 		}
@@ -544,6 +544,7 @@ CONTAINER;
 					if ( !d.getElementById( j ) ) {
 						var pd = d.createElement( c ), s;
 						pd.id = j;
+						pd.async = true;
 						pd.src = '{$script_url}';
 						s = d.getElementsByTagName( c )[0];
 						s.parentNode.insertBefore( pd, s );
@@ -565,17 +566,12 @@ new PolldaddyShortcode();
 if ( ! function_exists( 'polldaddy_link' ) ) {
 	// http://polldaddy.com/poll/1562975/?view=results&msg=voted
 	function polldaddy_link( $content ) {
-		return preg_replace( '!(?:\n|\A)http://polldaddy.com/poll/([0-9]+?)/(.+)?(?:\n|\Z)!i', "\n<script type='text/javascript' language='javascript' charset='utf-8' src='//static.polldaddy.com/p/$1.js'></script><noscript> <a href='http://polldaddy.com/poll/$1/' target='_blank'>View Poll</a></noscript>\n", $content );
+		return jetpack_preg_replace_outside_tags( '!(?:\n|\A)http://polldaddy.com/poll/([0-9]+?)/(.+)?(?:\n|\Z)!i', "\n<script type='text/javascript' charset='utf-8' async src='//static.polldaddy.com/p/$1.js'></script><noscript> <a href='http://polldaddy.com/poll/$1/'>View Poll</a></noscript>\n", $content, 'polldaddy.com/poll' );
 	}
 
 	// higher priority because we need it before auto-link and autop get to it
 	add_filter( 'the_content', 'polldaddy_link', 1 );
 	add_filter( 'the_content_rss', 'polldaddy_link', 1 );
-
-	/** This filter is documented in modules/shortcodes/youtube.php */
-	if ( apply_filters( 'jetpack_comments_allow_oembed', get_option( 'embed_autourls' ) ) ) {
-		add_filter( 'comment_text', 'polldaddy_link', 1 );
-	}
 }
 
 wp_oembed_add_provider( '#http://poll\.fm/.*#i', 'http://polldaddy.com/oembed/', true );

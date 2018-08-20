@@ -106,3 +106,7 @@ wp-content/mysql.sql
 *.asf
 *.wmv
 *.avi
+
+# wp-local-docker
+data/
+logs/

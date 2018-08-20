@@ -1,9 +1,9 @@
 <?php
 /*
 Plugin Name: Plugin Organizer
-Plugin URI: http://www.jsterup.com
+Plugin URI: http://www.jsterup.com/dev/wordpress/plugins/plugin-organizer/
 Description: A plugin for specifying the load order of your plugins.
-Version: 6.0.4
+Version: 9.5.1
 Author: Jeff Sterup
 Author URI: http://www.jsterup.com
 License: GPL2

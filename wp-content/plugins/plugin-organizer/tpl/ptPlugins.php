@@ -5,24 +5,17 @@
     
 	<div style="clear: both;"></div>
 	<p>Select the plugins you would like to disable/enable on the selected post type.
-	  <a href="#TB_inline?width=400&height=200&inlineId=PO-pt-help" title="Post Type Plugins" class="thickbox">
+	  <a href="#" onclick="PO_display_ui_dialog('Post Type Plugins', 'This will overwrite any settings you have applied to any posts matching this post type.  The settings for individual posts can not be restored once this is done.  You can override these settings on each individual post by checking a checkbox.');return false;">
 	    <span class="dashicons PO-dashicon dashicons-editor-help"></span>
 	  </a>
-	  <div id="PO-pt-help" class="PO-help">
-		<p>
-		This will overwrite any settings you have applied to any posts matching this post type.  The settings for individual posts can not be restored once this is done.  You can override these settings on each individual post by checking a checkbox.
-		</p>
-	  </div>
 	</p>
+	<div id="PO-progress-message">
+	</div>
 	<div id="PO-pt-settings" class="metabox-holder">
-      <div class="PO-loading-container">
-		<div>
-			<img src="<?php print $this->PO->urlPath . "/image/ajax-loader.gif"; ?>">
-		</div>
-	  </div>
+      <div class="PO-loading-container fa fa-spinner fa-pulse"></div>
 	  <div id="pluginListdiv" class="stuffbox inside" style="width: 98%">
 		<?php
-	    $ajaxSaveFunction = "PO_submit_pt_plugins();";
+	    $ajaxSaveFunction = "PO_submit_pt_plugins(0, 0);";
 	    require_once('postMetaBox.php');
 	    ?>
 	  </div>

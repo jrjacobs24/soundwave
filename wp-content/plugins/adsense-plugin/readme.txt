@@ -1,108 +1,125 @@
-=== Google AdSense by BestWebSoft ===
-Contributors: bestwebsoft
-Donate link: http://bestwebsoft.com/donate/
+=== Google AdSense plugin ===
+Contributors: gasplugin
 Tags: ad, ad banner, ad format, ad parameters, google adsense, ads display, ads widgets, google plugin, insert ads, text ads, adsense plugin, advertisements
-Requires at least: 3.8
-Tested up to: 4.5.2
-Stable tag: 1.39
+Requires at least: 3.9
+Tested up to: 4.9.1
+Stable tag: 1.47
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-This plugin allows Google AdSense implementation into your website.
+Add Adsense ads to WordPress website pages, posts, custom posts, search results, categories, tags, and widgets.
 
 == Description ==
 
-Google AdSense Plugin creates blocks to display ads on your website. It allows to customize the ads displaying, such as format (text ad, image, text with an image or link), size, color of the elements in the ad block, rounded corners and the ad block position on the website. It provides possibility to make ads unique and original.
+Google Adsense plugin is a superb solution to earn money by placing ads to WordPress website pages, posts, custom posts, search results, categories, tags, and widgets.
 
-http://www.youtube.com/watch?v=wWaEGbR5Lz0
+Link your website to Google AdSense account and manage available ads easily right from your admin dashboard!
 
-<a href="http://www.youtube.com/watch?v=Nkp267vxZ84" target="_blank">Google AdSense by BestWebSoft Video instruction on Installation</a>
+= Free Features =
 
-<a href="http://wordpress.org/plugins/adsense-plugin/faq/" target="_blank">Google AdSense by BestWebSoft FAQ</a>
+* [video intelligence](https://www.vi.ai/) integration [NEW]
+* Automatically insert ads to:
+	* Home page
+	* Pages
+	* Posts/Custom post types
+	* Categories/Tags
+	* Widgets
+* Change ads position:
+	* Before content
+	* After content
+	* Below comments form
+* Show idle ads
+* Receive the existing ads from your Google AdSense account
+* Add custom code via plugin settings page
+* Compatible with latest WordPress version
+* Incredibly simple settings for fast setup without modifying code
+* Detailed step-by-step documentation and videos
+* Multilingual and RTL ready
 
-<a href="http://support.bestwebsoft.com" target="_blank">Google AdSense by BestWebSoft Support</a>
+= Help & Support =
 
-<a href="http://bestwebsoft.com/products/google-adsense/?k=b68fe7a44579f45545bd6e7556143e9a" target="_blank">Upgrade to Google AdSense Pro by BestWebSoft</a>
-
-= Features =
-
-* Receiving the existing ad blocks from Google AdSense account using Google AdSense API.
-* Automatic insertion of ad blocks to the home page, pages, post / custom posts, categories / tags.
-* Displaying ad blocks before content, after content, after comments form.
-* Displaying ad block in the widget.
-
-If you have a feature, suggestion or idea you'd like to see in the plugin, we'd love to hear about it! <a href="http://support.bestwebsoft.com/hc/en-us/requests/new" target="_blank">Suggest a Feature</a>
-
-= Recommended Plugins =
-
-The author of the Google AdSense also recommends the following plugins:
-
-* <a href="http://wordpress.org/plugins/updater/">Updater</a> - This plugin updates WordPress core and the plugins to the recent versions. You can also use the auto mode or manual mode for updating and set email notifications.
-There is also a premium version of the plugin <a href="http://bestwebsoft.com/products/updater-pro/?k=9bfbc38d14047beca03dbc74f96cc135">Updater Pro</a> with more useful features available. It can make backup of all your files and database before updating. Also it can forbid some plugins or WordPress Core update.
+Visit our Help Center if you have any questions, our friendly Support Team is happy to help — <support@gasplugin.com>
 
 = Translation =
 
-* Czech (cs_CZ) (thanks to <a href="mailto:info@pamadessoft.cz">PaMaDeSSoft</a>, www.pamadessoft.cz)
+* Czech (cs_CZ) (thanks to [PaMaDeSSoft](mailto:info@pamadessoft.cz), www.pamadessoft.cz)
 * Russian (ru_RU)
+* Spanish (es_ES)
 * Ukrainian (uk)
-
-If you create your own language pack or update the existing one, you can send <a href="http://codex.wordpress.org/Translating_WordPress" target="_blank">the text in PO and MO files</a> for <a href="http://support.bestwebsoft.com" target="_blank">BestWebSoft</a> and we'll add it to the plugin. You can download the latest version of the program for work with PO and MO files <a href="http://www.poedit.net/download.php" target="_blank">Poedit</a>.
-
-= Technical support =
-
-Dear users, our plugins are available for free download. If you have any questions or recommendations regarding the functionality of our plugins (existing options, new options, current issues), please feel free to contact us. Please note that we accept requests in English only. All messages in other languages won't be accepted.
-
-If you notice any bugs in the plugins, you can notify us about it and we'll investigate and fix the issue then. Your request should contain URL of the website, issues description and WordPress admin panel credentials.
-Moreover we can customize the plugin according to your requirements. It's a paid service (as a rule it costs $40, but the price can vary depending on the amount of the necessary changes and their complexity). Please note that we could also include this or that feature (developed for you) in the next release and share with the other users then. 
-We can fix some things for free for the users who provide translation of our plugin into their native language (this should be a new translation of a certain plugin, you can check available translations on the official plugin page).
 
 == Installation ==
 
 1. Upload the folder `adsense-plugin` to the directory `/wp-content/plugins/`.
 2. Activate the plugin via the 'Plugins' menu in WordPress.
-3. The plugin settings are located in "BWS Plugins"->"AdSense".
-
-<a href="https://docs.google.com/document/d/1P-Jb5oYadIAsJz63wbsppxhOnCX-Z27S3XzE6HNcrbI/edit" target="_blank">View a Step-by-step Instruction on AdSense Installation</a>.
-
-http://www.youtube.com/watch?v=Nkp267vxZ84
+3. The plugin settings are located in "BWS Panel"->"Google AdSense".
 
 == Frequently Asked Questions ==
 
-= How many ad blocks can be added to the page? =
+= Google Adsense plugin installed, but it does not appear in the list of plugins in the Wordpress admin dashboard. Why? =
 
-The maximum number of ad blocks on the page cannot be more than 3 - https://support.google.com/adsense/answer/1346295?hl=en#Ad_limit_per_page.
+It is possible that you have AdBlock browser extension (or similar software) installed in your browser and it blocks ads. Disable AdBlock extension to see the Adsense plugin and make necessary changes.
 
-= Why I cannot choose more than one ad block in the widget tab? =
+= Adsense plugin doesn't work (ads not displaying). What should I do? =
 
-This limitation is caused by the maximum allowable number of ad blocks to be displayed on the page. Ad blocks display can only be set in the post; in this case, it will not be displayed on the page. However, a widget is usually displayed in every post and every page.
+Please complete the following steps:
+1. Setup your Google Adsense account.
+2. Make sure that your Wordpress theme contains necessary hooks for ads displaying (the_content, wp_footer, etc). If you don't know how to check that, just install any official Wordpress theme (for example, [Twenty Sixteen](https://wordpress.org/themes/twentysixteen/)) and check if the ads are displayed. If yes, it means that the necessary hooks are missing in your theme.
+3. Make sure Adblock (or similar browser extensions) is disabled in your browser.
 
-= Ads are not displayed =
+= How to add Google Adsense block to the sidebar? =
 
-1. Please make sure Adblocker (or some other similar extensions that block ads) is disabled in the browser
-2. Please make sure that your theme contains the hooks 'the_content' for the ads displaying. The plugin will not wok without such hooks.
-If you do not know how to do it please install a standard WordPress theme and check if the ads will be displayed or not, if yes it means that there aren't the necessary hooks in your theme.
-3. Probably you did not set up 'google ads' account
+Follow the next steps in order to add the Google Adsense block to the sidebar:
+1. Open your Wordpress admin dashboard.
+2. Make sure that Google Adsense plugin is installed and activated.
+3. Navigate to the Appearance > Widgets section and add the Google Adsense widget to the available sidebar.
 
-= What should i do if the plugin is not displayed in the plugins list or the tab with the settings page is not displayed either? =
+= How do I see my reporting/stats? Will it show up on my Google Adsense account? When? =
 
-If you have an extention in your browser that hides ads (e.g. AdBlock or something like that) - it can hide AdSense displaying on this page, as it is set to search by words like AdSense and similar. 
-Please make sure Adblocker (or some other similar extensions that block ads) is disabled in the browser
+If everything is correct, you will see it in your Google Adsense account.
 
 = I have some problems with the plugin's work. What Information should I provide to receive proper support? =
 
-Please make sure that the problem hasn't been discussed yet on our forum (<a href="http://support.bestwebsoft.com" target="_blank">http://support.bestwebsoft.com</a>). If no, please provide the following data along with your problem's description:
-
-1. the link to the page where the problem occurs
-2. the name of the plugin and its version. If you are using a pro version - your order number.
-3. the version of your WordPress installation
-4. copy and paste into the message your system status report. Please read more here: <a href="https://docs.google.com/document/d/1Wi2X8RdRGXk9kMszQy1xItJrpN0ncXgioH935MaBKtc/edit" target="_blank">Instuction on System Status</a>
+Please provide the following data along with your problem's description to support@gasplugin.com:
+- The link to the page where the problem occurs
+- The name of the plugin and its version. If you are using a pro version - your order number.
+- The version of your WordPress installation
+- Copy and paste into the message your system status report. Please read more here: [Instruction on System Status](https://docs.google.com/document/d/1Wi2X8RdRGXk9kMszQy1xItJrpN0ncXgioH935MaBKtc/)
 
 == Screenshots ==
 
-1. Google AdSense Settings page (Unauthorized in Google AdSense).
-2. Google AdSense Settings page (Authorized in Google AdSense).
+1. Google AdSense Settings page (Unauthorized in Google AdSense and vi stories).
+2. vi stories Sign Up form.
+3. vi stories Log In form.
+4. Google AdSense Settings page (Authorized in Google AdSense vi stories ).
+5. vi stories Player customization form.
+6. Google AdSense Ads and vi stories Ads in the front-end (Before the content).
 
 == Changelog ==
+
+= V1.47 - 24.11.2017 =
+* NEW : Integration with video intelligence AG.
+
+= V1.46 - 01.11.2017 =
+* Update : We updated all functionality for wordpress 4.8.3.
+
+= V1.45 - 13.07.2017 =
+* Update : We updated all functionality for wordpress 4.8.
+
+= V1.44 - 14.04.2017 =
+* Bugfix : Multiple Cross-Site Scripting (XSS) vulnerability was fixed.
+
+= V1.43 - 03.01.2017 =
+* Update : BWS panel section was updated.
+
+= V1.42 - 04.10.2016 =
+* NEW : The Spanish language file was added.
+
+= V1.41 - 08.08.2016 =
+* Update : All functionality for wordpress 4.6 was updated.
+
+= V1.40 - 24.06.2016 =
+* NEW : Option for hiding idle blocks in the ad blocks list was added.
+* Bugfix : The bug with ads on the home page was fixed.
 
 = V1.39 - 06.04.2016 =
 * NEW : The Czech language file was added.
@@ -184,7 +201,7 @@ Please make sure that the problem hasn't been discussed yet on our forum (<a hre
 * Update : We updated all functionality for wordpress 3.5.2.
 
 = V1.19 - 29.05.2013 =
-* Update : BWS plugins section is updated. 
+* Update : BWS plugins section is updated.
 
 = V1.18 - 25.04.2013 =
 * Update : The French language is updated in the plugin.
@@ -216,11 +233,11 @@ Please make sure that the problem hasn't been discussed yet on our forum (<a hre
 * NEW : Polish and Spanish language files are added to the plugin.
 
 = V1.9 - 24.07.2012 =
-* Bugfix : Cross Site Request Forgery bug was fixed. 
+* Bugfix : Cross Site Request Forgery bug was fixed.
 
 = V1.8 - 09.07.2012 =
 * NEW : The Hebrew language file is added to the plugin.
-* Bugfix : Ads displaying on the frontend with Single page and Home page option was fixed. 
+* Bugfix : Ads displaying on the frontend with Single page and Home page option was fixed.
 
 = V1.7 - 27.06.2012 =
 * Update : We updated all functionality for wordpress 3.4.
@@ -238,10 +255,10 @@ Please make sure that the problem hasn't been discussed yet on our forum (<a hre
 * NEW : The Dutch language file is added.
 
 = V1.2 - 27.01.2012 =
-* Bugfix : Settings and ads displaying are saved on the frontend. 
+* Bugfix : Settings and ads displaying are saved on the frontend.
 
 = V1.1 - 29.12.2011 =
-* Changed : BWS plugin's section. 
+* Changed : BWS plugin's section.
 * Changed : Default plugin's settings.
 
 = V1.0 - 27.12.2011 =
@@ -257,6 +274,30 @@ Please make sure that the problem hasn't been discussed yet on our forum (<a hre
 * Changed : Usability at the settings page of the plugin was improved.
 
 == Upgrade Notice ==
+
+= V1.47 =
+* New features added.
+
+= V1.46 =
+* The compatibility with new WordPress version updated.
+
+= V1.45 =
+* The compatibility with new WordPress version updated.
+
+= V1.44 =
+* Bugs fixed.
+
+= V1.43 =
+* Plugin optimization completed.
+
+= V1.42 =
+* New languages added.
+
+= V1.41 =
+* The compatibility with new WordPress version updated.
+
+= V1.40 =
+New option for hiding idle blocks in the ad blocks list was added. The bug with ads on the home page was fixed.
 
 = V1.39 =
 The Czech language file was added. Ability to add custom styles.
@@ -349,10 +390,10 @@ The option for the displaying of google ads has been implemented using the widge
 Polish and Spanish language files was added to the plugin.
 
 = V1.9 - 24.07.2012 =
-Cross Site Request Forgery bug was fixed. 
+Cross Site Request Forgery bug was fixed.
 
 = V1.8 =
-The Hebrew language file is added to the plugin. Ads displaying on the frontend with Single page and Home page option was fixed. 
+The Hebrew language file is added to the plugin. Ads displaying on the frontend with Single page and Home page option was fixed.
 
 = V1.7 =
 We updated all functionality for wordpress 3.4.
@@ -373,7 +414,7 @@ The Dutch language file is added.
 A bug with saving settings and ads displaying on the frontend was fixed in this version. Please upgrade plugin immediately. Thank you
 
 = V1.1 - 29.12.2011 =
-BWS plugin's section was changed. Default plugin's settings were changed. 
+BWS plugin's section was changed. Default plugin's settings were changed.
 
 = V1.0 - 27.12.2011 =
 All words are added in language file.

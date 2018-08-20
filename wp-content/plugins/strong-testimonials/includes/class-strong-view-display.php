@@ -35,6 +35,17 @@ class Strong_View_Display extends Strong_View {
 	public function __construct( $atts = array() ) {
 		parent::__construct( $atts );
 		add_filter( 'wpmtst_build_query', array( $this, 'query_pagination' ) );
+		add_action( 'wpmtst_view_processed', array( $this, 'reset_view' ) );
+	}
+
+	/**
+	 * Reset stuff after view is processed or rendered.
+	 *
+	 * @since 2.31.0
+	 */
+	public function reset_view() {
+		wp_reset_postdata();
+		remove_filter( 'wpmtst_build_query', array( $this, 'query_pagination' ) );
 	}
 
 	/**
@@ -69,13 +80,12 @@ class Strong_View_Display extends Strong_View {
 		$this->has_pagination();
 		$this->has_layouts();
 
-		//$this->load_dependent_scripts();
 		$this->load_extra_stylesheets();
 
-		// If we can preprocess, we can add the inline style in the <head>.
+		// If we can preprocess, we can add the inline style in <head>.
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_custom_style' ), 20 );
 
-		wp_reset_postdata();
+		do_action( 'wpmtst_view_processed' );
 	}
 
 	/**
@@ -97,11 +107,7 @@ class Strong_View_Display extends Strong_View {
 		$this->load_dependent_scripts();
 		$this->load_extra_stylesheets();
 
-		/*
-		 * If we cannot preprocess, add the inline style to the footer.
-		 * If we were able to preprocess, this will not duplicate the code
-		 * since `wpmtst-custom-style` was already enqueued (I think).
-		 */
+		// If we cannot preprocess, add the inline style to the footer.
 		add_action( 'wp_footer', array( $this, 'add_custom_style' ) );
 
 		/**
@@ -142,7 +148,7 @@ class Strong_View_Display extends Strong_View {
 
 		if ( ! $this->found_posts ) {
 
-			if ( current_user_can( 'administrator' ) ) {
+			if ( current_user_can( 'strong_testimonials_views' ) ) {
 				$html = $this->nothing_found();
 			}
 
@@ -152,10 +158,19 @@ class Strong_View_Display extends Strong_View {
 
 		} else {
 
+			/**
+			 * Gutenberg. Yay.
+			 * @since 2.31.9
+			 */
+			global $post;
+			$post_before = $post;
+
 			ob_start();
 			/** @noinspection PhpIncludeInspection */
 			include( $this->template_file );
 			$html = ob_get_clean();
+
+			$post = $post_before;
 
 		}
 
@@ -178,7 +193,7 @@ class Strong_View_Display extends Strong_View {
 		 */
 		do_action( 'wpmtst_view_rendered', $this->atts );
 
-		wp_reset_postdata();
+		do_action( 'wpmtst_view_processed' );
 
 		$this->html = apply_filters( 'strong_view_html', $html, $this );
 
@@ -404,7 +419,6 @@ class Strong_View_Display extends Strong_View {
 	public function has_layouts() {
 		if ( $this->is_masonry() ) {
 
-			//WPMST()->render->add_script( 'wpmtst-masonry-script' );
 			WPMST()->render->add_script( 'jquery-masonry' );
 			WPMST()->render->add_script( 'imagesloaded' );
 
@@ -419,8 +433,6 @@ class Strong_View_Display extends Strong_View {
 			}
 
 		} elseif ( 'grid' == $this->atts['layout'] ) {
-
-			// WPMST()->render->add_script( 'wpmtst-grid-script' );
 
 			if ( apply_filters( 'wpmtst_load_grid_style', true ) ) {
 				WPMST()->render->add_style( 'wpmtst-grid-style' );

@@ -38,19 +38,60 @@ class Strong_View_Form extends Strong_View {
 	}
 
 	/**
+	 * Print overlay while form data is submitted.
+	 *
+	 * This helps when uploading large files and on slow connections.
+	 *
+	 * @since 2.31.5
+	 */
+	public function print_overlay() {
+		if ( apply_filters( 'wpmtst_form_wait', true ) ) {
+			WPMST()->render->add_style( 'wpmtst-font-awesome' );
+			?>
+			<div class="strong-form-wait">
+				<div class="message">
+					<?php echo wp_kses_post( apply_filters( 'wpmtst_form_wait_message', '<i class="fa fa-2x fa-spinner fa-pulse" aria-hidden="true"></i>' ) ); ?>
+				</div>
+			</div>
+			<?php
+		}
+	}
+
+	/**
+	 * Load resources on form success.
+	 *
+	 * When using normal form submission (not Ajax)
+	 * and displaying a success message (not redirecting).
+	 */
+	public function success() {
+		$form_options = get_option( 'wpmtst_form_options' );
+
+		// Remember: top level is converted to strings!
+		$args = array(
+			'display' => array(
+				'successMessage' => true,
+			),
+			'scroll'  => array(
+				'onSuccess'       => $form_options['scrolltop_success'],
+				'onSuccessOffset' => $form_options['scrolltop_success_offset'],
+			),
+		);
+
+		WPMST()->render->add_script( 'wpmtst-form-validation' );
+		WPMST()->render->add_script_var( 'wpmtst-form-validation', 'strongForm', $args );
+
+        $this->find_stylesheet();
+        $this->html = wpmtst_get_success_message();
+
+        do_action( 'wpmtst_form_success', $this->atts );
+    }
+
+	/**
 	 * Build the view.
 	 */
 	public function build() {
 
 		do_action( 'wpmtst_view_build_before', $this );
-
-		if ( isset( $_GET['success'] ) ) {
-			$this->find_stylesheet();
-			$this->on_form_success();
-			do_action( 'wpmtst_form_success', $this->atts );
-			$this->html = wpmtst_get_success_message();
-			return;
-		}
 
 		$this->build_classes();
 		$this->find_stylesheet();
@@ -58,13 +99,8 @@ class Strong_View_Form extends Strong_View {
 		$this->load_extra_stylesheets();
 		$this->custom_background();
 		$this->load_validator();
-		//$this->load_honeypots();
 
-		/*
-		 * If we cannot preprocess, add the inline style to the footer.
-		 * If we were able to preprocess, this will not duplicate the code
-		 * since `wpmtst-custom-style` was already enqueued (I think).
-		 */
+		// If we cannot preprocess, add the inline style to the footer.
 		add_action( 'wp_footer', array( $this, 'add_custom_style' ) );
 		add_action( 'wp_footer', array( $this, 'load_honeypots' ) );
 
@@ -87,6 +123,7 @@ class Strong_View_Form extends Strong_View {
 		/**
 		 * Add filters here.
 		 */
+		add_action( 'wpmtst_before_form', array( $this, 'print_overlay' ) );
 
 		/**
 		 * Locate template.
@@ -100,17 +137,32 @@ class Strong_View_Form extends Strong_View {
 		if ( has_filter( 'wpmtst_render_view_template' ) ) {
 			$html = apply_filters( 'wpmtst_render_view_template', '', $this );
 		} else {
+
+			/**
+			 * Gutenberg. Yay.
+			 * @since 2.31.9
+			 */
+			global $post;
+			$post_before = $post;
+
 			ob_start();
 			/** @noinspection PhpIncludeInspection */
 			include( $this->template_file );
 			$html = ob_get_clean();
+
+			$post = $post_before;
+
 		}
 		// TODO apply content filters
 
 		/**
 		 * Remove filters here.
 		 */
+		remove_action( 'wpmtst_before_form', array( $this, 'print_overlay' ) );
 
+		/**
+		 * Trigger stuff.
+		 */
 		do_action( 'wpmtst_form_rendered', $this->atts );
 
 		$this->html = apply_filters( 'strong_view_form_html', $html, $this );
@@ -234,30 +286,6 @@ class Strong_View_Form extends Strong_View {
             </script>
             <?php
 		}
-	}
-
-	/**
-	 * Load scripts on form success.
-	 *
-	 * When using normal form submission (not Ajax)
-	 * and displaying a success message (not redirecting).
-	 */
-	public function on_form_success() {
-		$form_options = get_option( 'wpmtst_form_options' );
-
-		// Remember: top level is converted to strings!
-		$args = array(
-			'display' => array(
-				'successMessage' => true,
-			),
-			'scroll'  => array(
-				'onSuccess'       => $form_options['scrolltop_success'],
-				'onSuccessOffset' => $form_options['scrolltop_success_offset'],
-			),
-		);
-
-		WPMST()->render->add_script( 'wpmtst-form-validation' );
-		WPMST()->render->add_script_var( 'wpmtst-form-validation', 'strongForm', $args );
 	}
 
 }

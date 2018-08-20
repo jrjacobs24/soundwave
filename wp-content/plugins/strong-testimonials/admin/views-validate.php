@@ -13,10 +13,10 @@
 function wpmtst_validate_view_name( $name, $view_id ){
 	if ( '' == $name ) {
 		$name = "Testimonial View $view_id";
-	}
-	else {
+	}else {
 		$name = sanitize_text_field( stripslashes( $name ) );
 	}
+
 	return $name;
 }
 
@@ -153,8 +153,8 @@ function wpmtst_sanitize_view( $input ) {
 	// Thumbnail
 	$data['thumbnail']        = isset( $input['thumbnail'] ) ? 1 : 0;
 	$data['thumbnail_size']   = sanitize_text_field( $input['thumbnail_size'] );
-	$data['thumbnail_width']  = sanitize_text_field( $input['thumbnail_width'] );
-	$data['thumbnail_height'] = sanitize_text_field( $input['thumbnail_height'] );
+	$data['thumbnail_width']  = max( 0, sanitize_text_field( $input['thumbnail_width'] ) );
+	$data['thumbnail_height'] = max( 0, sanitize_text_field( $input['thumbnail_height'] ) );
 	$data['lightbox']         = isset( $input['lightbox'] ) ? 1 : 0;
 	$data['lightbox_class']   = sanitize_text_field( $input['lightbox_class'] );
 	$data['gravatar']         = sanitize_text_field( $input['gravatar'] );
@@ -345,7 +345,19 @@ function wpmtst_sanitize_view_pagination( $in ) {
 function wpmtst_sanitize_view_slideshow( $in ) {
 	$out = array();
 
-	$out['effect']             = sanitize_text_field( $in['effect'] );
+	$out['max_slides']  = intval( sanitize_text_field( $in['max_slides'] ) );
+	$out['move_slides'] = intval( sanitize_text_field( $in['move_slides'] ) );
+	if ( $out['move_slides'] > $out['max_slides'] ) {
+		$out['move_slides'] = $out['max_slides'];
+	}
+	$out['margin']      = intval( sanitize_text_field( $in['margin'] ) );
+
+	if ( $out['max_slides'] > 1 ) {
+		$out['effect'] = 'horizontal';
+	} else {
+		$out['effect'] = sanitize_text_field( $in['effect'] );
+	}
+
 	$out['pause']              = floatval( sanitize_text_field( $in['pause'] ) );
 	$out['speed']              = floatval( sanitize_text_field( $in['speed'] ) );
 	$out['auto_hover']         = isset( $in['auto_hover'] ) ? 1 : 0;
@@ -367,7 +379,7 @@ function wpmtst_sanitize_view_slideshow( $in ) {
 	}
 
 	// Controls
-	$out['controls_type'] = sanitize_text_field( $in['controls_type'] );
+	$out['controls_type']  = sanitize_text_field( $in['controls_type'] );
 	$out['controls_style'] = sanitize_text_field( $in['controls_style'] );
 
 	// Pagination
@@ -376,7 +388,11 @@ function wpmtst_sanitize_view_slideshow( $in ) {
 
 	// Position is shared by Controls and Pagination
 	if ( $out['controls_type'] || $out['pager_type'] ) {
-		$out['nav_position'] = sanitize_text_field( $in['nav_position'] );
+		if ( $out['max_slides'] > 1 ) {
+			$out['nav_position'] = 'outside';
+		} else {
+			$out['nav_position'] = sanitize_text_field( $in['nav_position'] );
+		}
 	}
 
 	ksort( $out );

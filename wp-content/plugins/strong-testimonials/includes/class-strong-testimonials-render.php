@@ -51,7 +51,7 @@ class Strong_Testimonials_Render {
 	 * Set shortcode.
 	 */
 	public function set_shortcodes() {
-		$this->shortcode = WPMST()->shortcodes->get_shortcode();
+		$this->shortcode = WPMST()->shortcode->get_shortcode();
 	}
 
 	/**
@@ -247,7 +247,6 @@ class Strong_Testimonials_Render {
 				}
 			}
 		}
-		wp_enqueue_style( 'wpmtst-custom-style' );
 	}
 
 	/**
@@ -576,7 +575,7 @@ class Strong_Testimonials_Render {
 	/**
 	 * Prerender a view to gather styles, scripts, and script vars.
 	 *
-	 * Similar to Strong_Testimonials_Shortcodes::render_view().
+	 * Similar to Strong_Testimonials_View_Shortcode::render_view().
 	 *
 	 * @param $atts
 	 *
@@ -633,6 +632,8 @@ class Strong_Testimonials_Render {
 		if ( isset( $atts['id'] ) && $atts['id'] ) {
 			$atts['view'] = $atts['id'];
 			unset( $atts['id'] );
+		} else {
+			return array_merge( array( 'view_not_found' => 1 ), $atts );
 		}
 
 		// Fetch the view
@@ -644,7 +645,7 @@ class Strong_Testimonials_Render {
 		 * @since 1.21.0
 		 */
 		if ( ! $view ) {
-			return array_merge( array( 'view_not_found' => 1 ), $out );
+			return array_merge( array( 'view_not_found' => 1 ), $atts );
 		}
 
 		$view_data = unserialize( $view['value'] );

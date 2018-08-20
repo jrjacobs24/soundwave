@@ -1,16 +1,34 @@
 .strong-view {
-	&.controls-type-sides {
-		.wpmslider-prev {
-			left: 8px;
-		}
-		.wpmslider-next {
-			right: 8px;
-		}
-		.wpmslider-prev,
-		.wpmslider-next {
-			position: absolute;
-			width: auto;
-			top: calc( 50% - 14px );
-		}
-	}
+  &.controls-type-sides {
+    .wpmslider-controls {
+      height: 0;
+    }
+
+    .wpmslider-prev,
+    .wpmslider-next {
+      position: absolute;
+      top: calc(50% - 14px);
+      margin: 0;
+    }
+
+    &:not(.rtl) {
+      .wpmslider-prev {
+        left: 10px;
+      }
+
+      .wpmslider-next {
+        right: 10px;
+      }
+    }
+
+    &.rtl {
+      .wpmslider-prev {
+        right: 10px;
+      }
+
+      .wpmslider-next {
+        left: 10px;
+      }
+    }
+  }
 }

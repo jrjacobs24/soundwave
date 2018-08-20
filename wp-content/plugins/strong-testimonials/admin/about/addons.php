@@ -5,7 +5,7 @@
 <div id="addons" class="feature-section three-col">
     <div class="col sidebar-block sidebar-news addon review-markup">
         <h3>Review Markup</h3>
-        <p>Improve your search engine results and get Rich Snippets by adding review markup to your testimonials. </p>
+        <p>Improve your search engine results and get rich snippets by adding review markup to your testimonials. </p>
         <div class="actions">
             <a href="https://strongplugins.com/plugins/strong-testimonials-review-markup/?utm_source=plugin&utm_medium=about" target="_blank">Learn more</a>
             &nbsp;&bull;&nbsp;
@@ -26,6 +26,15 @@
             <a href="https://strongplugins.com/plugins/strong-testimonials-properties/?utm_source=plugin&utm_medium=about" target="_blank">Learn more</a>
             &nbsp;&bull;&nbsp;
             <a href="https://strongdemos.com/strong-testimonials-properties/?utm_source=plugin&utm_medium=about" target="_blank">Go demo</a>
+        </div>
+    </div>
+    <div class="col sidebar-block sidebar-news addon assignment">
+        <h3>Assignment</h3>
+        <p>Assign testimonials to any object (posts, pages, media or custom content types) with features designed to simplify your workflow. Works well with portfolio, directory and service business themes.</p>
+        <div class="actions">
+            <a href="https://strongplugins.com/plugins/strong-testimonials-assignment?utm_source=plugin&utm_medium=about" target="_blank">Learn more</a>
+            &nbsp;&bull;&nbsp;
+            <a href="https://strongdemos.com/strong-testimonials-assignment/?utm_source=plugin&utm_medium=about" target="_blank">Go demo</a>
         </div>
     </div>
 </div>

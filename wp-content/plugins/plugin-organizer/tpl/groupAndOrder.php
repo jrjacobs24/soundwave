@@ -25,12 +25,8 @@ $groups = get_posts(array('post_type'=>'plugin_group', 'posts_per_page'=>-1));
 	</div>
 </div>
 
-<div id="PO-plugin-wrapper">
-	<div class="PO-loading-container">
-		<div>
-			<img src="<?php print $this->PO->urlPath . "/image/ajax-loader.gif"; ?>">
-		</div>
-	</div>
+<div id="PO-plugin-wrapper" class="PO-content-wrap">
+	<div class="PO-loading-container fa fa-spinner fa-pulse"></div>
 	<div class="inside">
 		<div class="table-header">
 			<div class="form-header">

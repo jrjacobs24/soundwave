@@ -1,5 +1,5 @@
 <?php
-
+// phpcs:disable PHPCompatibility
 /**
  * CSSTidy - CSS Parser and Optimiser
  *
@@ -241,12 +241,13 @@ class csstidy {
 	 * @var string
 	 */
 	public $tokens_list = "";
+
 	/**
 	 * Loads standard template and sets default settings
 	 * @access private
 	 * @version 1.3
 	 */
-	function csstidy() {
+	function __construct() {
 		$this->settings['remove_bslash'] = true;
 		$this->settings['compress_colors'] = true;
 		$this->settings['compress_font-weight'] = true;
@@ -283,6 +284,10 @@ class csstidy {
 		$this->optimise = new csstidy_optimise($this);
 
 		$this->tokens_list = & $GLOBALS['csstidy']['tokens'];
+	}
+
+	function csstidy() {
+		$this->__construct();
 	}
 
 	/**

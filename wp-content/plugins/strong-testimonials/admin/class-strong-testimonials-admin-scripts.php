@@ -28,6 +28,7 @@ class Strong_Testimonials_Admin_Scripts {
 		add_action( 'admin_print_styles-wpm-testimonial_page_testimonial-fields', array( __CLASS__, 'admin_fields' ) );
 		add_action( 'admin_print_styles-wpm-testimonial_page_testimonial-settings', array( __CLASS__, 'admin_settings' ) );
 		add_action( 'admin_print_styles-wpm-testimonial_page_about-strong-testimonials', array( __CLASS__, 'admin_about' ) );
+		add_action( 'admin_print_styles-wpm-testimonial_page_testimonial-shortcodes', array( __CLASS__, 'admin_shortcodes' ) );
 
 		add_action( 'load-edit.php', array( __CLASS__, 'admin_load_edit' ) );
 		add_action( 'load-post.php', array( __CLASS__, 'admin_load_post' ) );
@@ -77,6 +78,12 @@ class Strong_Testimonials_Admin_Scripts {
 				$plugin_version,
 				true );
 
+		wp_register_script( 'autosize',
+			WPMTST_ADMIN_URL . 'js/lib/autosize/autosize.min.js',
+			array(),
+			'4.0.1',
+			true );
+
 		/**
 		 * Form tab
 		 */
@@ -84,6 +91,12 @@ class Strong_Testimonials_Admin_Scripts {
 		                   WPMTST_ADMIN_URL . 'css/admin-form.css',
 		                   array( 'wpmtst-admin-style' ),
 		                   $plugin_version );
+
+		wp_register_script( 'wpmtst-admin-form-script',
+		                    WPMTST_ADMIN_URL . 'js/admin-form.js',
+		                    array( 'wpmtst-admin-script', 'autosize' ),
+		                    $plugin_version,
+		                    true );
 
 		/**
 		 * Compatibility tab
@@ -226,6 +239,7 @@ class Strong_Testimonials_Admin_Scripts {
 			'wpmtst_admin',
 			array(
 				'nonce' => wp_create_nonce( 'wpmtst-admin' ),
+				'templateTagTitle' => __( 'click to insert into message at caret', 'strong-testimonials' ),
 			)
 		);
 	}
@@ -275,7 +289,7 @@ class Strong_Testimonials_Admin_Scripts {
 		switch ( $tab ) {
 			case 'form':
 				wp_enqueue_style( 'wpmtst-admin-form-style' );
-				wp_enqueue_script( 'wpmtst-admin-script' );
+				wp_enqueue_script( 'wpmtst-admin-form-script' );
 				break;
 			case 'compat':
 				wp_enqueue_style( 'wpmtst-admin-compat-style' );
@@ -298,6 +312,16 @@ class Strong_Testimonials_Admin_Scripts {
 		wp_enqueue_style( 'wpmtst-admin-style' );
 		wp_enqueue_script( 'wpmtst-admin-script' );
 		wp_enqueue_style( 'wpmtst-about-style' );
+	}
+
+	/**
+	 * Shortcodes
+	 *
+	 * @since 2.31.0
+	 */
+	public static function admin_shortcodes() {
+		wp_enqueue_style( 'wpmtst-admin-style' );
+		wp_enqueue_style( 'wpmtst-rating-display' );
 	}
 
 	/**

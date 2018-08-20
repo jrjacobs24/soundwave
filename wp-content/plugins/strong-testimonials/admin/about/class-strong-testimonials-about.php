@@ -14,12 +14,6 @@ class Strong_Testimonials_About {
     }
 
 	/**
-	 * Initialize.
-	 */
-	public function init() {
-	}
-
-	/**
 	 * Add actions and filters.
 	 */
 	public function add_actions() {
@@ -63,11 +57,13 @@ class Strong_Testimonials_About {
 		?>
 		<div class="wrap about-wrap">
 
+			<?php /* translators: %s is the plugin version number */ ?>
 			<h1><?php printf( __( 'Welcome to Strong Testimonials %s', 'strong-testimonials' ), $major_minor ); ?></h1>
 
 			<p class="about-text">
                 <?php _e( 'Thank you for updating to the latest version!' ); ?>
-                <?php printf( 'Strong Testimonials %s offers improved view options.', $major_minor ); ?>
+				<?php /* translators: %s is the plugin version number */ ?>
+                <?php printf( 'Strong Testimonials %s adds a slider carousel option.', $major_minor ); ?>
             </p>
 
 			<div class="wp-badge strong-testimonials"><?php printf( __( 'Version %s' ), $major_minor ); ?></div>
@@ -80,6 +76,8 @@ class Strong_Testimonials_About {
 
 				<a href="<?php echo add_query_arg( 'tab', 'how-to', $url ); ?>" class="nav-tab <?php echo $active_tab == 'how-to' ? 'nav-tab-active' : ''; ?>"><?php _e( 'How To', 'strong-testimonials' ); ?></a>
 
+				<a href="<?php echo add_query_arg( 'tab', 'privacy', $url ); ?>" class="nav-tab <?php echo $active_tab == 'privacy' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Privacy' ); ?></a>
+
 			</h2>
 
 			<!--
@@ -89,6 +87,9 @@ class Strong_Testimonials_About {
 
 			<?php
 			switch( $active_tab ) {
+				case 'privacy':
+					include WPMTST_ADMIN . 'about/privacy.php';
+					break;
 				case 'how-to':
 					include WPMTST_ADMIN . 'about/how-to.php';
 					break;

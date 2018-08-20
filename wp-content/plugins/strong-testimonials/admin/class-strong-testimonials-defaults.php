@@ -313,7 +313,7 @@ class Strong_Testimonials_Defaults {
 				0 => array(
 					'record_type' => 'custom',
 					'name'        => 'client_name',
-					'label'       => __( 'Name', 'strong-testimonials-multiple-forms' ),
+					'label'       => __( 'Name', 'strong-testimonials' ),
 					'input_type'  => 'text',
 					'required'    => 1,
 					'after'       => '',
@@ -322,7 +322,7 @@ class Strong_Testimonials_Defaults {
 				1 => array(
 					'record_type' => 'custom',
 					'name'        => 'email',
-					'label'       => __( 'Email', 'strong-testimonials-multiple-forms' ),
+					'label'       => __( 'Email', 'strong-testimonials' ),
 					'input_type'  => 'email',
 					'required'    => 1,
 					'after'       => '',
@@ -333,7 +333,7 @@ class Strong_Testimonials_Defaults {
 				2 => array(
 					'record_type' => 'post',
 					'name'        => 'post_content',
-					'label'       => __( 'Testimonial', 'strong-testimonials-multiple-forms' ),
+					'label'       => __( 'Testimonial', 'strong-testimonials' ),
 					'input_type'  => 'textarea',
 					'required'    => 1,
 					'after'       => '',
@@ -389,8 +389,8 @@ class Strong_Testimonials_Defaults {
 			'required-field'     => array(
 				'order'       => 1,
 				/* translators: Settings > Form > Messages tab */
-				'description' => _x( 'Required Field', 'setting description', 'strong-testimonials' ),
-				'text'        => _x( 'Required field', 'Default message for required notice at top of form.', 'strong-testimonials' ),
+				'description' => _x( 'Required', 'setting description', 'strong-testimonials' ),
+				'text'        => _x( 'Required', 'Default message for required notice at top of form.', 'strong-testimonials' ),
 				'enabled'     => 1,
 			),
 			'captcha'            => array(
@@ -398,6 +398,7 @@ class Strong_Testimonials_Defaults {
 				/* translators: Settings > Form > Messages tab */
 				'description' => _x( 'Captcha Label', 'description', 'strong-testimonials' ),
 				'text'        => _x( 'Captcha', 'Default label for Captcha field on submission form.', 'strong-testimonials' ),
+				'required'    => false,
 			),
 			'form-submit-button' => array(
 				'order'       => 3,
@@ -491,7 +492,7 @@ class Strong_Testimonials_Defaults {
 				),
 				'single_template' => array(
 					'name'        => 'single_template',
-					'label'       => __( 'Single Template', 'strong-testimonials-lucid-theme' ),
+					'label'       => __( 'Single Template', 'strong-testimonials' ),
 					'description' => __( 'When viewing the testimonial using a theme\'s single post template.', 'strong-testimonials' ),
 				),
 			),
@@ -726,6 +727,9 @@ class Strong_Testimonials_Defaults {
 				'after_page_number'  => '',
 			),
 			'slideshow_settings'  => array(
+				'max_slides'         => 1,
+				'move_slides'        => 1,
+				'margin'             => 20,
 				'effect'             => 'fade',
 				'speed'              => 1,
 				'pause'              => 8,
@@ -762,7 +766,8 @@ class Strong_Testimonials_Defaults {
 	 * Compatibility options.
 	 *
 	 * @since 2.28.0
-	 *
+	 * @since 2.31.0 controller
+	 * @since 2.31.0 lazyload
 	 * @return array
 	 */
 	public static function get_compat_options() {
@@ -777,6 +782,18 @@ class Strong_Testimonials_Defaults {
 				'addednode_id'    => 'content', // = what we listen for
 				'event'           => '',
 				'script'          => '',
+			),
+			'controller' => array(
+				'initialize_on' => 'documentReady', // or windowLoad
+			),
+			'lazyload' => array(
+				'enabled' => '',
+				'classes' => array( // may be multiple pairs
+					array(
+						'start'  => '',
+						'finish' => '',
+					)
+				),
 			),
 		);
 

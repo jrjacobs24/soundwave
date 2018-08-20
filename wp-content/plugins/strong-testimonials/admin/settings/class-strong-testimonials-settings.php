@@ -25,6 +25,7 @@ class Strong_Testimonials_Settings {
 	 */
 	public static function add_actions() {
 		add_action( 'admin_init', array( __CLASS__, 'register_settings' ) );
+		add_action( 'wpmtst_settings_submit_row', array( __CLASS__, 'submit_row' ) );
 	}
 
 	/**
@@ -42,39 +43,52 @@ class Strong_Testimonials_Settings {
 		if ( ! current_user_can( 'strong_testimonials_options' ) )
 			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 
-		$active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : self::DEFAULT_TAB;
-		$url        = admin_url( 'edit.php?post_type=wpm-testimonial&page=testimonial-settings' );
+		$tab = self::get_tab();
+		$url = admin_url( 'edit.php?post_type=wpm-testimonial&page=testimonial-settings' );
 		?>
 		<div class="wrap wpmtst">
 
 			<h1><?php echo apply_filters( 'wpmtst_cpt_singular_name', __( 'Testimonial', 'strong-testimonials' ) ); ?> <?php _e( 'Settings' ); ?></h1>
 
-			<?php if( isset( $_GET['settings-updated'] ) ) : ?>
+			<?php if ( isset( $_GET['settings-updated'] ) ) : ?>
 				<div id="message" class="updated notice is-dismissible">
 					<p><?php _e( 'Settings saved.' ) ?></p>
 				</div>
 			<?php endif; ?>
 
 			<h2 class="nav-tab-wrapper">
-				<?php do_action( 'wpmtst_settings_tabs', $active_tab, $url ); ?>
+				<?php do_action( 'wpmtst_settings_tabs', $tab, $url ); ?>
 			</h2>
 
-			<form id="<?php esc_attr_e( $active_tab ); ?>-form" method="post" action="options.php">
+			<form id="<?php esc_attr_e( $tab ); ?>-form" method="post" action="options.php">
 				<?php
-				if ( isset( self::$callbacks[ $active_tab ] ) && wpmtst_callback_exists( self::$callbacks[ $active_tab ] ) ) {
-					call_user_func( self::$callbacks[ $active_tab ] );
+				if ( isset( self::$callbacks[ $tab ] ) && wpmtst_callback_exists( self::$callbacks[ $tab ] ) ) {
+					call_user_func( self::$callbacks[ $tab ] );
 				} else {
 					call_user_func( self::$callbacks[ self::DEFAULT_TAB ] );
 				}
-				?>
-				<p class="submit-row">
-					<?php submit_button( '', 'primary', 'submit-form', false ); ?>
-					<?php do_action( 'wpmtst_settings_submit_row'); ?>
-				</p>
+
+				if ( has_action( 'wpmtst_settings_submit_row' ) ) {
+				    echo '<p class="submit-buttons">';
+					do_action( 'wpmtst_settings_submit_row' );
+				    echo '</p>';
+                }
+                ?>
 			</form>
 
 		</div><!-- .wrap -->
 		<?php
+	}
+
+	public static function submit_row() {
+		$tabs = array( 'general', 'form', 'licenses', 'compat' );
+		if ( in_array( self::get_tab(), $tabs ) ) {
+			submit_button( '', 'primary', 'submit-form', false );
+		}
+	}
+
+	private static function get_tab() {
+		return ( isset( $_GET['tab'] ) && $_GET['tab'] ) ? $_GET['tab'] : self::DEFAULT_TAB;
 	}
 
 }

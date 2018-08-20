@@ -313,7 +313,6 @@ div.radio {
 label,
 .nolabel {
   vertical-align: baseline;
-  margin-right: 0.3em;
   display: inline-block; }
 
 label:hover {
@@ -782,7 +781,7 @@ ul.radio-list.template-list li {
       border-color: #444; }
   .fields .field3 {
     flex: 20; }
-  .fields span.link {
+  .fields div.link {
     display: inline-block;
     cursor: pointer;
     padding: 10px 10px 8px;
@@ -952,4 +951,13 @@ table.wpmtst-help-tab {
   right: 0;
   background: rgba(255, 255, 255, 0.7); }
 
-/*# sourceMappingURL=views.css.map */
+.form-table td p.description.normal {
+  font-style: normal; }
+
+ul.description.normal {
+  margin-top: 0;
+  font-style: normal; }
+
+ul.description li {
+  margin-bottom: 0;
+  line-height: 1.5; }

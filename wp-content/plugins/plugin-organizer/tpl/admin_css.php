@@ -12,15 +12,53 @@ if (!is_array($POAdminStyles)) {
 		color: <?php print (isset($POAdminStyles['network_plugins_font_color']) && $POAdminStyles['network_plugins_font_color'] != '')? $POAdminStyles['network_plugins_font_color'] : '#444'; ?> !important;
 	}
 
-	.plugin.active {
-		background-color: <?php print (isset($POAdminStyles['active_plugins_bg_color']) && $POAdminStyles['active_plugins_bg_color'] != '')? $POAdminStyles['active_plugins_bg_color'] : '#99cc99'; ?> !important;
+	.plugin.active, .activePluginWrap, #PO-plugin-legend-active {
+		background-color: <?php print (isset($POAdminStyles['active_plugins_bg_color']) && $POAdminStyles['active_plugins_bg_color'] != '')? $POAdminStyles['active_plugins_bg_color'] : '#fff'; ?> !important;
 		color: <?php print (isset($POAdminStyles['active_plugins_font_color']) && $POAdminStyles['active_plugins_font_color'] != '')? $POAdminStyles['active_plugins_font_color'] : '#444'; ?> !important;
+		border-bottom: 1px solid <?php print (isset($POAdminStyles['active_plugins_border_color']) && $POAdminStyles['active_plugins_border_color'] != '')? $POAdminStyles['active_plugins_border_color'] : '#ccc'; ?>;
 	}
 
-	.plugin.inactive {
-		background-color: <?php print (isset($POAdminStyles['inactive_plugins_bg_color']) && $POAdminStyles['inactive_plugins_bg_color'] != '')? $POAdminStyles['inactive_plugins_bg_color'] : '#ddd'; ?> !important;
+	.activePluginWrap a {
 		color: <?php print (isset($POAdminStyles['inactive_plugins_font_color']) && $POAdminStyles['inactive_plugins_font_color'] != '')? $POAdminStyles['inactive_plugins_font_color'] : '#444'; ?> !important;
 	}
+	
+	.plugin.inactive, .inactivePluginWrap, #PO-plugin-legend-inactive {
+		background-color: <?php print (isset($POAdminStyles['inactive_plugins_bg_color']) && $POAdminStyles['inactive_plugins_bg_color'] != '')? $POAdminStyles['inactive_plugins_bg_color'] : '#ddd'; ?> !important;
+		color: <?php print (isset($POAdminStyles['inactive_plugins_font_color']) && $POAdminStyles['inactive_plugins_font_color'] != '')? $POAdminStyles['inactive_plugins_font_color'] : '#444'; ?> !important;
+		border-bottom: 1px solid <?php print (isset($POAdminStyles['inactive_plugins_border_color']) && $POAdminStyles['inactive_plugins_border_color'] != '')? $POAdminStyles['inactive_plugins_border_color'] : '#fff'; ?>;
+	}
+
+	.inactivePluginWrap a {
+		color: <?php print (isset($POAdminStyles['inactive_plugins_font_color']) && $POAdminStyles['inactive_plugins_font_color'] != '')? $POAdminStyles['inactive_plugins_font_color'] : '#444'; ?> !important;
+	}
+
+	.groupWrap, #PO-plugin-legend-group {
+		background-color: <?php print (isset($POAdminStyles['plugin_groups_bg_color']) && $POAdminStyles['plugin_groups_bg_color'] != '')? $POAdminStyles['plugin_groups_bg_color'] : '#fff'; ?> !important;
+		color: <?php print (isset($POAdminStyles['plugin_groups_font_color']) && $POAdminStyles['plugin_groups_font_color'] != '')? $POAdminStyles['plugin_groups_font_color'] : '#444'; ?> !important;
+		border-bottom: 1px solid <?php print (isset($POAdminStyles['plugin_groups_border_color']) && $POAdminStyles['plugin_groups_border_color'] != '')? $POAdminStyles['plugin_groups_border_color'] : '#ccc'; ?>;
+	}
+	
+	.groupWrap a {
+		color: <?php print (isset($POAdminStyles['plugin_groups_font_color']) && $POAdminStyles['plugin_groups_font_color'] != '')? $POAdminStyles['plugin_groups_font_color'] : '#444'; ?> !important;
+	}
+	
+	.globalPluginWrap, .globalGroupWrap, #PO-plugin-legend-global {
+		background-color: <?php print (isset($POAdminStyles['global_plugins_bg_color']) && $POAdminStyles['global_plugins_bg_color'] != '')? $POAdminStyles['global_plugins_bg_color'] : '#660011'; ?> !important;
+		color: <?php print (isset($POAdminStyles['global_plugins_font_color']) && $POAdminStyles['global_plugins_font_color'] != '')? $POAdminStyles['global_plugins_font_color'] : '#fff'; ?> !important;
+		border-bottom: 1px solid <?php print (isset($POAdminStyles['global_plugins_border_color']) && $POAdminStyles['global_plugins_border_color'] != '')? $POAdminStyles['global_plugins_border_color'] : '#ccc'; ?>;
+	}
+
+	.globalGroupWrap a {
+		color: <?php print (isset($POAdminStyles['global_plugins_font_color']) && $POAdminStyles['global_plugins_font_color'] != '')? $POAdminStyles['global_plugins_font_color'] : '#fff'; ?> !important;
+	}
+
+	.pluginWrap.selected, .groupWrap.selected, #PO-plugin-legend-selected {
+		background-color: <?php print (isset($POAdminStyles['selected_plugins_bg_color']) && $POAdminStyles['selected_plugins_bg_color'] != '')? $POAdminStyles['selected_plugins_bg_color'] : '#cccc66'; ?> !important;
+		color: <?php print (isset($POAdminStyles['selected_plugins_font_color']) && $POAdminStyles['selected_plugins_font_color'] != '')? $POAdminStyles['selected_plugins_font_color'] : '#444'; ?> !important;
+		border-bottom: 1px solid <?php print (isset($POAdminStyles['selected_plugins_border_color']) && $POAdminStyles['selected_plugins_border_color'] != '')? $POAdminStyles['selected_plugins_border_color'] : '#ccc'; ?>;
+	}
+
+	
 
 
 	.toggle-button-on {
@@ -41,16 +79,5 @@ if (!is_array($POAdminStyles)) {
 	.toggle-button-no {
 		background-color: <?php print (isset($POAdminStyles['no_btn_bg_color']) && $POAdminStyles['no_btn_bg_color'] != '')? $POAdminStyles['no_btn_bg_color'] : '#990000'; ?>;
 		color: <?php print (isset($POAdminStyles['no_btn_font_color']) && $POAdminStyles['no_btn_font_color'] != '')? $POAdminStyles['no_btn_font_color'] : '#fff'; ?>;
-	}
-
-
-	.group-toggle-button-on {
-		background-color: <?php print (isset($POAdminStyles['group_on_btn_bg_color']) && $POAdminStyles['group_on_btn_bg_color'] != '')? $POAdminStyles['group_on_btn_bg_color'] : '#336699'; ?>;
-		color: <?php print (isset($POAdminStyles['group_on_btn_font_color']) && $POAdminStyles['group_on_btn_font_color'] != '')? $POAdminStyles['group_on_btn_font_color'] : '#fff'; ?>;
-	}
-
-	.group-toggle-button-off {
-		background-color: <?php print (isset($POAdminStyles['group_off_btn_bg_color']) && $POAdminStyles['group_off_btn_bg_color'] != '')? $POAdminStyles['group_off_btn_bg_color'] : '#336699'; ?>;
-		color: <?php print (isset($POAdminStyles['group_off_btn_font_color']) && $POAdminStyles['group_off_btn_font_color'] != '')? $POAdminStyles['group_off_btn_font_color'] : '#fff'; ?>;
 	}
 </style>

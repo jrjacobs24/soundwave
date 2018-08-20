@@ -45,7 +45,10 @@ function wppb_show_hide_admin_bar_content() {
 	<div class="wrap wppb-wrap wppb-admin-bar">
 	
 		<h2><?php _e( 'Admin Bar Settings', 'profile-builder' );?></h2>
-		<p><?php _e( 'Choose which user roles view the admin bar in the front-end of the website.', 'profile-builder' ); ?>
+
+		<?php wppb_generate_settings_tabs() ?>
+
+		<p class="description"><?php _e( 'Choose which user roles view the admin bar in the front-end of the website.', 'profile-builder' ); ?>
 		<form method="post" action="options.php#show-hide-admin-bar">
 		<?php	
 			$admin_bar_settings = get_option( 'wppb_display_admin_settings' );
@@ -105,13 +108,15 @@ function wppb_replace_username_on_admin_bar( $wp_admin_bar ) {
 	
 	if ( isset( $wppb_general_settings['loginWith'] ) && ( $wppb_general_settings['loginWith'] == 'email' ) ){
 		$current_user = wp_get_current_user();
-	
-		$my_account_main = $wp_admin_bar->get_node( 'my-account' );
-		$new_title1 = str_replace( $current_user->display_name, $current_user->user_email, $my_account_main->title );
-		$wp_admin_bar->add_node( array( 'id' => 'my-account', 'title' => $new_title1 ) );
-		
-		$my_account_sub = $wp_admin_bar->get_node( 'user-info' );
-		$wp_admin_bar->add_node( array( 'parent' => 'user-actions', 'id' => 'user-info', 'title'  => get_avatar( $current_user->ID, 64 )."<span class='display-name'>{$current_user->user_email}</span>", 'href' => get_edit_profile_url( $current_user->ID ), 'meta'   => array( 'tabindex' => -1 ) ) );
+
+		if ( $current_user->ID != 0 ) {
+			$my_account_main = $wp_admin_bar->get_node('my-account');
+			$new_title1 = str_replace($current_user->display_name, $current_user->user_email, $my_account_main->title);
+			$wp_admin_bar->add_node(array('id' => 'my-account', 'title' => $new_title1));
+
+			$my_account_sub = $wp_admin_bar->get_node('user-info');
+			$wp_admin_bar->add_node(array('parent' => 'user-actions', 'id' => 'user-info', 'title' => get_avatar($current_user->ID, 64) . "<span class='display-name'>{$current_user->user_email}</span>", 'href' => get_edit_profile_url($current_user->ID), 'meta' => array('tabindex' => -1)));
+		}
 	}
 	
 	return $wp_admin_bar;

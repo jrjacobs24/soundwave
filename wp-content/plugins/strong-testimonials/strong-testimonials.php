@@ -2,10 +2,9 @@
 /**
  * Plugin Name: Strong Testimonials
  * Plugin URI: https://strongplugins.com/plugins/strong-testimonials/
- * Description: A full-featured plugin that works right out of the box for beginners and offers advanced features for pros.
  * Description: Collect and display your testimonials or reviews.
  * Author: Chris Dillon
- * Version: 2.30.5
+ * Version: 2.32
  *
  * Author URI: https://strongplugins.com/
  * Text Domain: strong-testimonials
@@ -13,7 +12,7 @@
  * Requires: 3.7 or higher
  * License: GPLv2 or later
  *
- * Copyright 2014-2018 Chris Dillon chris@strongplugins.com
+ * Copyright 2014-2018 Chris Dillon chris@strongwp.com
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'WPMTST_VERSION', '2.30.5' );
+define( 'WPMTST_VERSION', '2.32' );
 define( 'WPMTST_PLUGIN', plugin_basename( __FILE__ ) ); // strong-testimonials/strong-testimonials.php
 define( 'WPMTST', dirname( WPMTST_PLUGIN ) );           // strong-testimonials
 define( 'STRONGPLUGINS_STORE_URL', 'https://strongplugins.com' );
@@ -46,7 +45,7 @@ if ( ! class_exists( 'Strong_Testimonials' ) ) :
 /**
  * Main plugin class.
  *
- * @property  Strong_Testimonials_Shortcodes shortcodes
+ * @property  Strong_Testimonials_View_Shortcode shortcode
  * @property  Strong_Testimonials_Render render
  * @property  Strong_Mail mail
  * @property  Strong_Templates templates
@@ -62,9 +61,9 @@ final class Strong_Testimonials {
 	public $plugin_data;
 
 	/**
-	 * @var Strong_Testimonials_Shortcodes
+	 * @var Strong_Testimonials_View_Shortcode
 	 */
-	public $shortcodes;
+	public $shortcode;
 
 	/**
 	 * @var Strong_Testimonials_Render
@@ -191,11 +190,15 @@ final class Strong_Testimonials {
 	 * Instantiate our classes.
 	 */
 	public function init() {
-		$this->shortcodes = new Strong_Testimonials_Shortcodes();
+		$this->shortcode  = new Strong_Testimonials_View_Shortcode();
 		$this->render     = new Strong_Testimonials_Render();
 		$this->mail       = new Strong_Mail();
 		$this->templates  = new Strong_Templates();
 		$this->form       = new Strong_Testimonials_Form();
+
+		new Strong_Testimonials_Count_Shortcode();
+		new Strong_Testimonials_Average_Shortcode();
+		new Strong_Testimonials_Privacy();
 	}
 
 	/**
@@ -208,7 +211,11 @@ final class Strong_Testimonials {
 	private function includes() {
 		require_once WPMTST_INC . 'class-strong-log.php';
 
-		require_once WPMTST_INC . 'class-strong-testimonials-shortcodes.php';
+		require_once WPMTST_INC . 'class-strong-testimonials-privacy.php';
+
+		require_once WPMTST_INC . 'class-strong-testimonials-shortcode.php';
+		require_once WPMTST_INC . 'class-strong-testimonials-shortcode-count.php';
+		require_once WPMTST_INC . 'class-strong-testimonials-shortcode-average.php';
 		require_once WPMTST_INC . 'class-strong-testimonials-render.php';
 		require_once WPMTST_INC . 'class-strong-view.php';
 		require_once WPMTST_INC . 'class-strong-view-display.php';
@@ -241,6 +248,8 @@ final class Strong_Testimonials {
 			require_once WPMTST_ADMIN . 'menu/class-strong-testimonials-menu-fields.php';
 			require_once WPMTST_ADMIN . 'menu/class-strong-testimonials-menu-settings.php';
 			require_once WPMTST_ADMIN . 'menu/class-strong-testimonials-menu-views.php';
+			require_once WPMTST_ADMIN . 'menu/class-strong-testimonials-menu-shortcodes.php';
+			require_once WPMTST_ADMIN . 'class-strong-testimonials-page-shortcodes.php';
 
 			require_once WPMTST_ADMIN . 'settings/class-strong-testimonials-settings.php';
 			require_once WPMTST_ADMIN . 'settings/class-strong-testimonials-settings-general.php';

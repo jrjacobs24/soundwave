@@ -2,9 +2,9 @@
 Contributors: foomagoo
 Donate link: http://www.jsterup.com/donate
 Tags: plugin organizer, load order, organize plugins, plugin order, sort plugin, group plugin, disable plugins by post, disable plugins by page, disable plugins by custom post type, turn off plugins for post, turn off plugins for page, turn off plugins for custom post type
-Requires at least: 3.8
-Tested up to: 4.2.2
-Stable tag: 6.0.4
+Requires at least: 4.0
+Tested up to: 4.9.8
+Stable tag: 9.5.1
 
 
 This plugin allows you to do the following:
@@ -19,6 +19,8 @@ This plugin allows you to do the following:
 2. Selectively disable plugins by any post type or wordpress managed URL.
 3. Adds grouping to the plugin admin age.
 
+WARNING: Reordering or disabling plugins can have catastrophic affects on your site.  It can cause issues with plugins and can render your site inaccessible.
+
 == Installation ==
 
 1. Extract the downloaded Zip file.
@@ -31,32 +33,88 @@ IMPORTANT: To enable selective plugin loading you must move the /wp-content/plug
 Note: If you are having troubles you can view the documentation by going to http://www.jsterup.com/dev/wordpress/plugins/plugin-organizer/documentation/
 
 == Frequently Asked Questions ==
-Q. How do I enable the selective plugin loading functionality?
 
-A. Go to the Plugin Organizer settings page and check the enable radio button under selective plugin loading.  Then visit your homepage.  Finally return to the Plugin Organizer settings page and see if the enable radio button is still checked.  If it is not then you are running an old version of the MU component.  Copy the PluginOrganizerMU.class.php file to the mu-plugins folder then deactivate and reactivate the plugin.  Repeat these steps to ensure that the plugin is working.  Remember that you will need to update the PluginOrganizerMU.class.php file whenever the plugin is updated and check your settings afterward.
+You can find a full FAQ list at http://www.jsterup.com/dev/wordpress/plugins/plugin-organizer/faq/
 
-Q. Does this plugin work with wordpress multi-site?
+= Can Plugin Organizer be used with caching plugins? =
 
-A. Yes it has been tested on several multi-site installs.  Both subdomain and sub folder types.
+The simple answer. Yes. But you must understand how your caching plugin and Plugin Organizer do what they do. If your caching plugin creates a minified version of the javascript files loaded on a page then there is the potential that Plugin Organizer will cause the caching plugin to constantly recreate the minified javascript files.
 
-Q. Does this plugin work with custom post types?
+Let’s say you have plugins A, B, C, and D active on your site and D is disabled globally. All 4 plugins add javascript to the site. On http://www.yourdomainnameyouuse.com/post-1/ you have plugin B disabled with Plugin Organizer. On http://www.yourdomainnameyouuse.com/post-2/ you have nothing disabled by Plugin Organizer and plugin D has been enabled, overriding the global setting. When someone visits http://www.yourdomainnameyouuse.com/post-1/ a minified javascript file has to be generated containing the scripts for plugins A and C. Then someone visits http://www.yourdomainnameyouuse.com/post-2/. The minified javascript file has to be recreated because the javascript for plugins A, B, C, and D need to be loaded. Then someone visits http://www.yourdomainnameyouuse.com/post-3/ and the minified javascript file has to be created again because the file has to contain the scripts for plugins A, B, and C but not D.
 
-A. Yes it has been tested with custom post types.  You can add support for your custom post types on the settings page.
+The above example explains how load time and caching can be affected with a caching plugin that creates minified javascript files. It basically renders the caching plugin useless.
 
-Q. Does this only apply to WP MU or all types of WP installs?
+Another example would be a caching plugin that creates a static version of pieces of the page. Again lets say we have the same plugins and the same posts. When someone visits http://www.yourdomainnameyouuse.com/post-1/ static pages are created with the content from plugins A and C. This cache has a lifetime of 300 seconds for example. When someone visits http://www.yourdomainnameyouuse.com/post-2/ it has the content for plugins A and C but it is missing Plugins B and D because the cache hasn’t expired. This can cause unexpected content and errors.
+
+There are different ways that caching plugins work and they can work together with Plugin Organizer. These are only 2 examples to give an idea. But you have to understand how they work and how you are affecting your cache by disabling plugins.
+
+= Are there any known conflicts with other plugins? =
+
+Yes.  A malicious plugin named WP Spamshield targets the settings used by Plugin Organizer to disable it.  It also targets various other plugins and changes how they behave or disables them entirely.  All of this is done without the users knowledge or consent.  This plugin was removed from the Wordpress Plugin Directory because of this malicious code but it may still exist on some users sites.  It will also likely be released from a different repository in the future and start targeting plugins again.  You should remove WP Spamshield not only to make sure that Plugin Organizer runs correctly but to ensure the security of your website is not compromised.
+
+= How do I disable plugins on the WordPress admin? =
+
+Follow the documentation page for disable plugins on wp-admin.
+
+= I upgraded and the metabox has disappeared from the post edit screen where I can enable/disable plugins. =
+
+Go to the Plugin Organizer settings page and click the button under selective plugin loading to turn it on.  During the upgrade process selective plugin loading got turned off.
+
+= How do I enable the selective plugin loading functionality? =
+
+Go to the Plugin Organizer settings page and click the button under selective plugin loading to turn it on.  Then visit your homepage.  Finally return to the Plugin Organizer settings page and see if the button is still set to on.  If it is not then you are running an old version of the MU component.  Copy the PluginOrganizerMU.class.php file to the mu-plugins folder then deactivate and reactivate the plugin.  Repeat these steps to ensure that the plugin is working.  Remember that you will need to update the PluginOrganizerMU.class.php file whenever the plugin is updated and check your settings afterward.
+
+= Does this plugin work with wordpress multi-site? =
+
+Yes it has been tested on several multi-site installs.  Both subdomain and sub folder types.
+
+= Does this plugin work with custom post types? =
+
+Yes it has been tested with custom post types.  You can add support for your custom post types on the settings page.
+
+= Does this only apply to WP MU or all types of WP installs? =
+
 "IMPORTANT: To enable selective plugin loading you must move the /wp-content/plugins/plugin-organizer/lib/PluginOrganizerMU.class.php file to /wp-content/mu-plugins or wherever your mu-plugins folder is located. If the mu-plugins directory does not exist you can create it.  The plugin will attempt to create this directory and move the file itself when activated.  Depending on your file permissions it may not be successful."
 
-A. The mu-plugins folder contains "Must Use" plugins that are loaded before regular plugins. The mu is not related to WordPress MU. This was added to regular WordPress in 3.0 I believe. I only placed this one class in the MU folder because I wanted to have my plugin run as a normal plugin so it could be disabled if needed. 
+The mu-plugins folder contains "Must Use" plugins that are loaded before regular plugins. The mu is not related to WordPress MU. This was added to regular WordPress in 3.0 I believe. I only placed this one class in the MU folder because I wanted to have my plugin run as a normal plugin so it could be disabled if needed. 
 
+= In what instance would this plugin be useful? =
 
-Q. In what instance would this plugin be useful?
-
-A. 
-  Example 1: If you have a large number of plugins and don't want them all to load for every page you can disable the unneeded plugins for each individual page.  Or you can globally disable them and enable them for each post or page you will need them on.
-  Example 2: If you have plugins that conflict with eachother then you can disable the plugins that are conflicting for each indivdual post or page.
-  Example 3: If you have plugins that conflict with eachother then you can disable the plugins globally and activate them only on posts or pages where they will be used.
+Example 1: If you have a large number of plugins and don't want them all to load for every page you can disable the unneeded plugins for each individual page.  Or you can globally disable them and enable them for each post or page you will need them on.
+Example 2: If you have plugins that conflict with eachother then you can disable the plugins that are conflicting for each indivdual post or page.
+Example 3: If you have plugins that conflict with eachother then you can disable the plugins globally and activate them only on posts or pages where they will be used.
 
 Note: If you are having troubles you can view the documentation by going to http://www.jsterup.com/dev/wordpress/plugins/plugin-organizer/documentation/
+
+= How do I target the homepage of my site if it isn't a page post type? =
+
+Create a plugin filter with your home page url. Like http://www.jsterup.com/. Then enable or disable the plugins you want with that filter.
+
+= Can I use wildcards in a plugin filter permalink? =
+
+Yes. You can use limited wildcards in the permalink structure. For instance you can match the url http://www.jsterup.com/some/pretty/permalink/ by entering http://www.jsterup.com/some/*/permalink/. You can also match the url by entering http://www.jsterup.com/*/pretty/permalink/ as the permalink. The only character that is recognized is the * character. It can only replace one piece of the url in between the / characters.
+
+= Can I enable/disable plugins based on post type? =
+
+Yes. Go to the Post Type Plugins page under Plugin Organizer in the admin menu. Here you can select the post type you want to change and disable/enable plugins for that post type as long as the setting hasn't been overridden on the individual posts.
+
+= How do I disable a plugin on the front end and still have it enabled on the admin pages? =
+
+To load a plugin only in the admin you need to enable selective plugin loading for the admin areas and fuzzy url matching. Then globally disable the plugin you want to turn off on the front end. Next create a plugin filter with the permalink set to your admin url. Like http://www.jsterup.com/wp-admin/. Then enable the plugin for that plugin filter and select also affect children. Now the plugin should only be loaded in the admin.
+
+= Can I disable plugins by role? =
+
+Yes. Go to the Plugin Organizer settings page and check the box next to each of the roles you want to be able to disable/enable plugins with. THen a separate container will appear on the post edit screen for you to disable/enable plugins with.
+
+= I have disabled a form plugin globally and enabled it on a specific page where it is used. The plugin loads on the page but then it doesn't work when I submit the form. =
+
+When the form is submitted it is not submitting to the page you are viewing. It is submitting to an ajax endpoint. Which is a different URL. You need to enable the plugin on that URL to get the form working. Here are 2 examples of how to do that.
+
+Caldera Forms:
+https://wordpress.org/support/topic/conflict-w-caldera-forms-like-emilybkk-posted/
+
+Contact Form 7:
+https://wordpress.org/support/topic/conflict-with-contact-form-7-4/
 
 == Screenshots ==
 
@@ -69,7 +127,178 @@ Note: If you are having troubles you can view the documentation by going to http
 
 == Changelog ==
 
-= 6.0.4 = 
+= 9.5.1 =
+Added warning for users running Woocommerce and Woocommerce Smart Coupons.
+Added ability to set the style of the debug messages container so it will work better with any site.
+
+= 9.5 =
+Changed all ajax functions to accept json objects in the response.
+Changed footer action call for debug messages to use get_footer instead of wp_footer.
+
+= 9.4 =
+Added debug messages to see how the MU plugin is affecting the page a user is viewing. Messages can be restricted by role.
+Changed the way settings are sent from the settings page to the ajax endpoint.
+
+= 9.3.6 =
+Fixed a problem with custom post types not applying the custom post type settings when they are created off of the edit screen.
+
+= 9.3.5 =
+Fixed colorpicker popup on settings page.
+Added better string sanitization for input variables.
+
+= 9.3.4 =
+Changed the settings page to use Jquery UI Tabs instead of my custom code.
+Cleaned up some of the CSS.
+
+= 9.3.3 =
+Added code to prevent the recreate_plugin_order function from saving active plugins if the array does not contain the same number of plugins as when it was called.
+Added a filter call to remove the active_plugins filters before any plugins are loaded.
+
+= 9.3.2 =
+Fixed bug where an error is thrown if the load order has not already been set in the database.
+
+= 9.3.1 =
+Moved the function call to maintain the load order to the init function.
+Added functionality to insert a newly activated plugin into the load order earlier.
+
+= 9.3 =
+Added a function to remove the active_plugins and active_sitewide_plugins filters after plugins are loaded to prevent other plugins from saving a bad list of plugins to the database.
+Plugins can now be disabled on the update-core and plugins admin pages without deactivating them.
+Changed the priority of the active_plugins and active_sitewide_plugins filters to 1 so they will load before anything else.
+Changed the way new plugins are added to the load order after being activated so they are closer to where they would be normally and not always added to the front.
+Fixed a bug where the role cookies are not created or deleted on login/logout if Plugin Organizer has been disabled.
+
+= 9.2.6 =
+Changed various option names in the database to prevent WP Spamshield from disabling Plugin Organizer
+Adding a warning about WP Spamshields malicious behavior.
+Changed the way roles where a plugin has been disabled as well as plugin members are displayed in the Plugin Organizer meta box.
+Fixed a bug in the SQL like statements used by the plugin search on the PO settings page introduced with a change made in wordpress 4.8.3.
+
+= 9.2.5 =
+Adding admin notices to warn users of what could happen when using Plugin Organizer.
+
+= 9.2.4 =
+Removing code that deactivates WP-Spamshield as it is pointless to keep releasing countermeasures to prevent their malicious code.
+
+= 9.2.3 =
+Added code to prevent a malicious plugin from disabling Plugin Organizer by deactivating it at load time.
+
+= 9.2.2 =
+Fixed a bug with the gettext hook being called mutiple times to change the page title on a group view.
+Added code to prevent other plugins from altering posted data.
+
+= 9.2.1 =
+Set the tolerance of the droppable elements on the right side of the plugin organizer meta box to pointer so the drag elements aren't dropped in the wrong place.
+
+= 9.2 =
+Added functionality to move multiple plugins while disabling.
+Fixed conflict with plugins setting the z-index of the ui-dialog popup.
+Fixed problem with wp_login action hook only sending one argument in some circumstances.
+
+= 9.1.4 =
+Changed the post_type varchar length back to 20 in last version which causied a problem with custom post type page.  Changed the size to 50 to allow for longer post_types.
+
+= 9.1.3 =
+Changing database statements to modify post_type and user_role to the new sizes for existing installs.
+
+= 9.1.2 =
+Changed the length of 2 fields in the po_plugins database table.  The index on these fields was causing problems with some collation settings.
+
+= 9.1.1 =
+Missed 2 files in release 9.1 so the plugin search tool always returned no results.  Releasing the missing file changes.
+
+= 9.1 =
+Fixed a problem with disabled roles not being displayed on post type page.
+Added a tool to search the datbase to see where a plugin is disabled.
+
+= 9.0.6 =
+Fixed problem with post_type column in po_plugins table being limited to 20 characters and causing an uncaught database error.
+Removed a console.log dbug statement from PT plugins page.
+
+= 9.0.5 =
+Fixed SQL error in the find_duplicate_permalinks function.
+
+= 9.0.4 =
+Fixed php notice from stored post types array not being set on activation.
+Fixed php notice from HTTP_USER_AGENT not being set on in the server array.
+Fixed javascript error from role support help icon that prevented the pop up from working.
+Put red and blue icons back for users who haven't enabled disable by role.
+
+= 9.0.3 =
+Fixed query in MU plugin for affect children.  Removed quotes around column name that were causing the query to fail.
+
+= 9.0.2 =
+Fixed problem with query that selects the base settings for a post in the post metabox.
+Fixed a problem where logged in users where being given the logged out user set of plugins.
+
+= 9.0.1 =
+Fixed PHP warning when array of enabled roles wasn't set on activation
+
+= 9.0 =
+Added ability to disable plugins by logged in status and role.
+Changed the look of all jquery UI pop ups.
+Changed the loading spinner to use fontawesome spinner.
+
+= 8.1 =
+Fixing logic that finds parent and wildcard permalinks in the database so a bad query isn't sent if there are no hashes in the where statement.
+Fixing logic that finds parent and wildcard permalinks in the database so all matches are pulled instead of just the first.  That way a loop is run on the results as before to weed out any empty entries in the database.
+
+= 8.0 =
+Changed the way posts are found in the database at load time to only use one query for fuzzy matching.
+Added the ability to have multiple permalinks assigned to one plugin filter.
+Fixed the function that finds parent plugins.
+Added the ability to use a wildcard in plugin filter permalinks.
+Fixed the post type plugins page so it doesn't timeout when a large amount of posts are being updated.
+Added ability to set the priority of post types.
+Added the ability to set the priority of plugin filters.
+Updated screenshots.
+
+= 7.3 =
+Added code to hide the disabled mobile list if mobile is not enabled.
+Added ability to select plugins and groups from the available list and move those selected to the disabled lists by clicking a button.
+
+= 7.2 =
+Added visual indicators to the available items list to show if a plugin or group is disabled.
+Fixed ordering of disabled items when all items are added to the disabled lists.
+Fixed disabled lists so they don't collapse when clicking to drag an item.
+
+= 7.1 =
+Replaced thickbox alerts with jQuery UI Notices to make them mobile friendly.
+Fixed group container expansion issue on group and order plugins page.
+Created functionality to hide/show disabled plugin lists.
+
+= 7.0.1 =
+Adding message to the PO meta box to drag and drop plugins and groups to disable them.
+
+= 7.0 =
+New interface for disabling plugins using jquery ui draggable/droppable.
+Added color customization for all plugin lists.
+Changed the override post type settings checkbox to show the plugin settings for the post being viewed when the checkbox is changed.  Rather than having to save the post first.
+
+= 6.0.11 =
+Added functionality to keep the settings on a post/page/post type when the post type settings have been overridden for the first time.
+Added functionality to update the permalink in the po_plugins table when the post status is updated.
+
+= 6.0.10 =
+Changed function that determines absolute path to use the DIRECTORY_SEPARATOR constant.
+
+= 6.0.9 =
+Removed use of WP_PLUGIN_DIR constant and replaced with a custom function to determine plugin directory.
+
+= 6.0.8 =
+Removed plugin order check from activation function because it seems to be causing problems for some users.
+
+= 6.0.7 =
+Fixing database table name check to not correct uppercase table name when OS ignores case.
+
+= 6.0.6 =
+Updating uninstall.php file with new table and option names from the last update.
+
+= 6.0.5 =
+Fixed problem where plugins were not removed from groups when plugin was uninstalled.
+Fixed database name.  Removed capital letters since it was causing issues with older versions of MySQL.
+
+= 6.0.4 =
 Fixed issue with missing css and javascript on certain custom post types.
 Fixed issue with saving post type plugins.  An error was encountered some times when saving the plugins.
 Added code to ensure the sql indexes exist to improve query times.
@@ -491,7 +720,6 @@ Initial version.
 
 == Upgrade Notice ==
 
-= 6.0.4 = 
-Fixed issue with missing css and javascript on certain custom post types.
-Fixed issue with saving post type plugins.  An error was encountered some times when saving the plugins.
-Added code to ensure the sql indexes exist to improve query times.
+= 9.5.1 =
+Added warning for users running Woocommerce and Woocommerce Smart Coupons.
+Added ability to set the style of the debug messages container so it will work better with any site.

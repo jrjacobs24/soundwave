@@ -60,11 +60,7 @@ class Strong_View_Slideshow extends Strong_View_Display {
 		$this->load_dependent_scripts();
 		$this->load_extra_stylesheets();
 
-		/*
-		 * If we cannot preprocess, add the inline style to the footer.
-		 * If we were able to preprocess, this will not duplicate the code
-		 * since `wpmtst-custom-style` was already enqueued (I think).
-		 */
+		// If we cannot preprocess, add the inline style to the footer.
 		add_action( 'wp_footer', array( $this, 'add_custom_style' ) );
 
 		/**
@@ -94,10 +90,21 @@ class Strong_View_Slideshow extends Strong_View_Display {
 		if ( has_filter( 'wpmtst_render_view_template' ) ) {
 			$html = apply_filters( 'wpmtst_render_view_template', '', $this );
 		} else {
+
+			/**
+			 * Gutenberg. Yay.
+			 * @since 2.31.9
+			 */
+			global $post;
+			$post_before = $post;
+
 			ob_start();
 			/** @noinspection PhpIncludeInspection */
 			include( $this->template_file );
 			$html = ob_get_clean();
+
+			$post = $post_before;
+
 		}
 
 		/**
@@ -161,6 +168,10 @@ class Strong_View_Slideshow extends Strong_View_Display {
 
 		$container_class_list[] = 'slider-container';
 
+		if ( $settings['max_slides'] > 1 ) {
+			$container_class_list[] = 'carousel';
+		}
+
 		$container_class_list[] = 'slider-mode-' . $settings['effect'];
 
 		if ( $settings['adapt_height'] ) {
@@ -179,7 +190,13 @@ class Strong_View_Slideshow extends Strong_View_Display {
 
 		// Controls
 		if ( isset( $nav_methods['controls'][ $control ]['class'] ) && $nav_methods['controls'][ $control ]['class'] ) {
-			$container_class_list[] = $nav_methods['controls'][ $control ]['class'];
+			if ( 'sides' == $control ) {
+				if ( $settings['max_slides'] == 1 ) {
+					$container_class_list[] = $nav_methods['controls'][ $control ]['class'];
+				} else {
+					$container_class_list[] = $nav_methods['controls'][ $control ]['class'] . '-outside';
+				}
+			}
 		}
 
 		if ( 'none' != $control ) {
@@ -200,7 +217,11 @@ class Strong_View_Slideshow extends Strong_View_Display {
 		}
 
 		// Position
+		// TODO Simplify logic.
 		if ( 'none' != $pager || ( 'none' != $control && 'sides' != $control ) ) {
+			if ( $settings['max_slides'] > 1 ) {
+				$settings['nav_position'] = 'outside';
+			}
 			$container_class_list[] = 'nav-position-' . $settings['nav_position'];
 		}
 
@@ -241,10 +262,15 @@ class Strong_View_Slideshow extends Strong_View_Display {
 		 */
 		if ( isset( $settings['controls_type'] ) && 'none' != $settings['controls_type'] ) {
 
-			$filename = 'slider-controls-' . $settings['controls_type'] . '-' . $settings['controls_style'];
+			$controls_type = $settings['controls_type'];
+			if ( 'sides' == $controls_type && $settings['max_slides'] > 1 ) {
+				$controls_type .= '-outside';
+			}
+
+			$filename = 'slider-controls-' . $controls_type . '-' . $settings['controls_style'];
 
 			if ( 'full' != $settings['controls_type'] ) {
-				if ( isset( $settings['pager_style'] ) && 'none' != $settings['pager_style'] ) {
+				if ( isset( $settings['pager_style'] ) && 'none' != $settings['pager_type'] ) {
 					$filename .= '-pager-' . $settings['pager_style'];
 				}
 			}
@@ -254,8 +280,7 @@ class Strong_View_Slideshow extends Strong_View_Display {
 				WPMST()->render->add_style( "wpmtst-$filename" );
 			}
 
-		}
-		elseif ( $not_full_controls ) {
+		} elseif ( $not_full_controls ) {
 
 			/*
 			 * Pagination only
@@ -300,18 +325,44 @@ class Strong_View_Slideshow extends Strong_View_Display {
 	 * @return array
 	 */
 	private function slideshow_args() {
-		$options      = get_option( 'wpmtst_options' );
-		$view_options = apply_filters( 'wpmtst_view_options', get_option( 'wpmtst_view_options' ) );
+		$options        = get_option( 'wpmtst_options' );
+		$view_options   = apply_filters( 'wpmtst_view_options', get_option( 'wpmtst_view_options' ) );
+		$compat_options = get_option( 'wpmtst_compat_options' );
 
 		/**
 		 * Compatibility with lazy loading and use of imagesLoaded.
+		 *
+		 * @since 2.31.0 As user-configurable.
 		 */
-		$compat = array();
-		if ( class_exists( 'FL_LazyLoad_Images' ) && get_theme_mod('lazy_load_images') ) {
-			$compat['flatsome'] = true;
-		} else {
-			$compat['flatsome'] = false;
+		$compat  = array();
+		$enabled = false;
+		$pairs   = array();
+
+		// Presets
+		// Flatsome theme
+		if ( class_exists( 'FL_LazyLoad_Images' ) && get_theme_mod( 'lazy_load_images' ) ) {
+			$enabled = true;
+			$pairs[] = array(
+				'start'  => 'lazy-load',
+				'finish' => '',
+			);
 		}
+
+		// User settings
+		if ( $compat_options['lazyload']['enabled'] ) {
+			$enabled = true;
+			foreach ( $compat_options['lazyload']['classes'] as $key => $pair ) {
+				$pairs[] = $pair;
+			}
+		}
+
+		// Bring together the presets and user settings.
+		$compat['lazyload'] = array(
+			'active'  => $enabled,
+			'classes' => $pairs,
+		);
+
+		$slide_margin = $this->atts['slideshow_settings']['max_slides'] > 1 ? $this->atts['slideshow_settings']['margin'] : 0;
 
 		$args = array(
 			'mode'                => $this->atts['slideshow_settings']['effect'],
@@ -329,12 +380,19 @@ class Strong_View_Slideshow extends Strong_View_Display {
 			'debug'               => defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG,
 			'compat'              => $compat,
 			'touchEnabled'        => $options['touch_enabled'],
+		    'maxSlides'           => $this->atts['slideshow_settings']['max_slides'],
+		    'moveSlides'          => $this->atts['slideshow_settings']['move_slides'],
+		    'slideMargin'         => $slide_margin,
+		    'minThreshold'        => 480,
 		);
+
 		if ( ! $this->atts['slideshow_settings']['adapt_height'] ) {
 			$args['stretch'] = $this->atts['slideshow_settings']['stretch'] ? 1 : 0;
 		}
 
-		// Controls
+		/**
+		 * Controls
+		 */
 		$options         = $view_options['slideshow_nav_method']['controls'];
 		$control_setting = $this->atts['slideshow_settings']['controls_type'];
 		if ( ! $control_setting ) {
@@ -356,7 +414,9 @@ class Strong_View_Slideshow extends Strong_View_Display {
 			}
 		}
 
-		// Pager
+		/**
+		 * Pager
+		 */
 		$options       = $view_options['slideshow_nav_method']['pager'];
 		$pager_setting = $this->atts['slideshow_settings']['pager_type'];
 		if ( ! $pager_setting ) {
@@ -378,7 +438,7 @@ class Strong_View_Slideshow extends Strong_View_Display {
 			}
 		}
 
-		return array( 'config' => $args );
+		return array( 'config' => apply_filters( 'wpmtst_slider_args', $args, $this->atts ) );
 	}
 
 }

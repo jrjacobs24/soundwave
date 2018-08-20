@@ -85,11 +85,9 @@
 			}
 		});
 		if (newGroupName == '') {
-			jQuery('#PO-ajax-notices-container').html('You must enter a name for the new plugin group.');
-			jQuery("#PO-show-ajax-notices").click();
+			PO_display_ui_dialog('Alert', 'You must enter a name for the new plugin group.');
 		} else if (groupList.length == 0) {
-			jQuery('#PO-ajax-notices-container').html('You must select at least one plugin to add to the group.');
-			jQuery("#PO-show-ajax-notices").click();
+			PO_display_ui_dialog('Alert', 'You must select at least one plugin to add to the group.');
 		} else {
 			var postVars = { 'PO_group_list[]': groupList, 'PO_group_name': newGroupName, PO_nonce: '<?php print $this->PO->nonce; ?>' };
 			PO_submit_ajax('PO_create_new_group', postVars, '#PO-plugin-wrapper', PO_update_group_controls);
@@ -137,8 +135,7 @@
 			}
 		});
 		if (groupList.length == 0) {
-			jQuery('#PO-ajax-notices-container').html('You must select at least one plugin to add to the group.');
-			jQuery("#PO-show-ajax-notices").click();
+			PO_display_ui_dialog('Alert', 'You must select at least one plugin to add to the group.');
 		} else {
 			var postVars = { 'PO_group_list[]': groupList, 'PO_group_ids[]': groupIds, PO_nonce: '<?php print $this->PO->nonce; ?>' };
 			PO_submit_ajax('PO_add_to_group', postVars, '#PO-plugin-wrapper', PO_update_group_containers);
@@ -161,8 +158,7 @@
 		});
 		
 		if (groupList.length == 0) {
-			jQuery('#PO-ajax-notices-container').html('You must select at least one plugin to remove from the group.');
-			jQuery("#PO-show-ajax-notices").click();
+			PO_display_ui_dialog('Alert', 'You must select at least one plugin to remove from the group.');
 		} else {
 			if (confirm('Are you sure you wish to remove the selected plugins from the selected groups?')) {
 				var postVars = { 'PO_group_list[]': groupList, 'PO_group_ids[]': groupIds, PO_nonce: '<?php print $this->PO->nonce; ?>' };
@@ -191,11 +187,9 @@
 		var newGroupName = jQuery('input[name=PO_new_group_name]:first').val();
 		var group_id = jQuery('#PO-group-name option:selected').val();
 		if (group_id == '') {
-			jQuery('#PO-ajax-notices-container').html('The group you have selected can\'t be edited.');
-			jQuery("#PO-show-ajax-notices").click();
+			PO_display_ui_dialog('Alert', 'The group you have selected can\'t be edited.');
 		} else if (newGroupName == '') {
-			jQuery('#PO-ajax-notices-container').html('You must enter a new name for the group if you want to change it.');
-			jQuery("#PO-show-ajax-notices").click();
+			PO_display_ui_dialog('Alert', 'You must enter a new name for the group if you want to change it.');
 		} else {
 			var postVars = { PO_nonce: '<?php print $this->PO->nonce; ?>', PO_group_id: group_id, PO_group_name: newGroupName };
 			PO_submit_ajax('PO_edit_plugin_group_name', postVars, '#PO-plugin-wrapper', PO_update_group_controls);
@@ -218,8 +212,14 @@
 				var postVars = { 'PO_plugin_path': jQuery(this).val(), PO_nonce: '<?php print $this->PO->nonce; ?>' };
 					
 				jQuery.post(encodeURI(ajaxurl + '?action=PO_get_plugin_group_container'), postVars, function (result) {
-					jQuery('#PO-info-container-'+pluginSelector+' .PO-info-inner').html(result);
-					if (result.match(/^\s*$/)) {
+					try {
+						var responseObj = jQuery.parseJSON(result);
+					} catch(err) {
+						var responseObj = {'success': 0, 'assigned_groups': ''};
+					}
+					
+					jQuery('#PO-info-container-'+pluginSelector+' .PO-info-inner').html(responseObj['assigned_groups']);
+					if (responseObj['assigned_groups'].match(/^\s*$/)) {
 						jQuery('#'+pluginSelector+'-plugin-groups').hide();
 					} else {
 						jQuery('#'+pluginSelector+'-plugin-groups').show();

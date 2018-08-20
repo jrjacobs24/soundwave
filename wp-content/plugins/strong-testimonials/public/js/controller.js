@@ -1,23 +1,31 @@
 /**
- * Component controller
+ * Component Controller
+ *
+ * Version 1.1.0
+ * For Strong Testimonials version 2.31
  *
  * @namespace window.strongControllerParms
  */
 
-'use strict'
+'use strict';
 
-var debugit = false
+var debugit = false;
 
 var strongController = {
 
+  grids: {},
+
+  iframes: {},
+
   defaults: {
-    method: "",
+    initializeOn: 'windowLoad',
+    method: '',
     universalTimer: 500,
     observerTimer: 500,
-    containerId: "page",    // = what we listen to  (try page > content > primary)
-    addedNodeId: "content", // = what we listen for
-    event: "",
-    script: "",
+    containerId: 'page',    // = what we listen to  (try page > content > primary)
+    addedNodeId: 'content', // = what we listen for
+    event: '',
+    script: '',
     debug: false
   },
 
@@ -25,12 +33,12 @@ var strongController = {
 
   setup: function (settings) {
     // Convert strings to integers
-    settings.universalTimer = parseInt(settings.universalTimer)
-    settings.observerTimer = parseInt(settings.observerTimer)
+    settings.universalTimer = parseInt(settings.universalTimer);
+    settings.observerTimer = parseInt(settings.observerTimer);
     // Convert strings to booleans
-    settings.debug = !!settings.debug
-    debugit = settings.debug
-    this.config = jQuery.extend({}, this.defaults, settings)
+    settings.debug = !!settings.debug;
+    debugit = settings.debug;
+    this.config = jQuery.extend({}, this.defaults, settings);
   },
 
   mutationObserver: window.MutationObserver || window.WebKitMutationObserver,
@@ -38,20 +46,20 @@ var strongController = {
   eventListenerSupported: window.addEventListener,
 
   checkInit: function () {
-    return jQuery(".strong-view[data-state='idle']").length
+    return jQuery('.strong-view[data-state="idle"]').length;
   },
 
   /**
    * Initialize sliders.
    */
   initSliders: function () {
-    var sliders = jQuery(".strong-view.slider-container[data-state='idle']")
-    if (debugit) console.log('sliders found:', sliders.length)
+    var sliders = jQuery('.strong-view.slider-container[data-state="idle"]');
+    if (debugit) console.log('sliders found:', sliders.length);
     if (sliders.length) {
       // Initialize independently
       sliders.each(function () {
-        jQuery(this).strongSlider()
-      })
+        jQuery(this).strongSlider();
+      });
     }
   },
 
@@ -59,12 +67,12 @@ var strongController = {
    * Initialize paginated views.
    */
   initPagers: function () {
-    var pagers = jQuery(".strong-pager[data-state='idle']")
-    if (debugit) console.log('pagers found:', pagers.length)
+    var pagers = jQuery('.strong-pager[data-state="idle"]');
+    if (debugit) console.log('pagers found:', pagers.length);
     if (pagers.length) {
-      pagers.each( function () {
-        jQuery(this).strongPager()
-      })
+      pagers.each(function () {
+        jQuery(this).strongPager();
+      });
     }
   },
 
@@ -75,22 +83,23 @@ var strongController = {
     /*
      * Masonry
      */
-    var grids = jQuery(".strong-view[data-state='idle'] .strong-masonry")
-    if (debugit) console.log('Masonry found:', grids.length)
-    if (grids.length) {
+    this.grids = jQuery('.strong-view[data-state="idle"] .strong-masonry');
+    if (debugit) console.log('Masonry found:', this.grids.length);
+    if (this.grids.length) {
       // Add our element sizing.
-      grids.prepend('<div class="grid-sizer"></div><div class="gutter-sizer"></div>')
+      this.grids.prepend('<div class="grid-sizer"></div><div class="gutter-sizer"></div>');
 
       // Initialize Masonry after images are loaded.
-      grids.imagesLoaded(function () {
-        grids.masonry({
+      this.grids.imagesLoaded(function () {
+        strongController.grids.masonry({
           columnWidth: '.grid-sizer',
           gutter: '.gutter-sizer',
           itemSelector: '.testimonial',
           percentPosition: true
-        })
-        grids.closest('.strong-view').attr('data-state', 'init')
-      })
+        });
+
+        strongController.grids.closest('.strong-view').attr('data-state', 'init');
+      });
     }
 
   },
@@ -99,12 +108,21 @@ var strongController = {
    * Initialize form validation.
    */
   initForm: function () {
-    var forms = jQuery(".strong-form[data-state='idle']")
-    if (debugit) console.log('forms found:', forms.length)
-    if (forms.length) {
-      strongValidation.init()
+    var forms = jQuery('.strong-form[data-state="idle"]');
+    var messages = jQuery('.testimonial-success');
+    if (debugit) console.log('forms found:', forms.length);
+    if (debugit) console.log('messages found:', messages.length);
+    if (forms.length || messages.length) {
+      strongValidation.init();
       // initialize Captcha plugins here
     }
+  },
+
+  /**
+   * Look for iframes.
+   */
+  initIframes: function () {
+    this.iframes = jQuery('iframe');
   },
 
   /**
@@ -118,32 +136,32 @@ var strongController = {
       // Define a new observer
       var obs = new this.mutationObserver(function (mutations) {
         // Loop through mutations
-        for (var i=0; i < mutations.length; i++) {
+        for (var i = 0; i < mutations.length; i++) {
           if (mutations[i].addedNodes.length) {
-            if (debugit) console.log('mutation observed', mutations)
+            if (debugit) console.log('mutation observed', mutations);
             // Loop through added nodes
             for (var j = 0; j < mutations[i].addedNodes.length; j++) {
               if (mutations[i].addedNodes[j].id === strongController.config.containerId) {
-                if (debugit) console.log('+', strongController.config.containerId)
-                callback()
-                return
+                if (debugit) console.log('+', strongController.config.containerId);
+                callback();
+                return;
               }
             }
           }
         }
-      })
+      });
       // Have the observer observe obj for changes
-      obs.observe(obj, {childList: true, subtree: true})
+      obs.observe(obj, {childList: true, subtree: true});
 
     } else if (this.eventListenerSupported) {
 
-      obj.addEventListener('DOMNodeInserted', function(e) {
+      obj.addEventListener('DOMNodeInserted', function (e) {
         /** currentTarget **/
-        if ( e.currentTarget.id === obj.id ) {
-          if (debugit) console.log('DOMNodeInserted:', e.currentTarget.id)
-          callback()
+        if (e.currentTarget.id === obj.id) {
+          if (debugit) console.log('DOMNodeInserted:', e.currentTarget.id);
+          callback();
         }
-      }, false)
+      }, false);
 
     }
   },
@@ -158,75 +176,109 @@ var strongController = {
    * Set up interval
    */
   newInterval: function () {
-      strongController.intervalId = setInterval(function tick () {
-        if (debugit) console.log('tick > checkInit', strongController.checkInit())
+    strongController.intervalId = setInterval(function tick () {
+      if (debugit) console.log('tick > checkInit', strongController.checkInit());
 
-        // Check for uninitialized components (sliders, paginated, layouts)
-        if (strongController.checkInit()) {
-          strongController.start()
-        }
-      }, strongController.config.universalTimer)
+      // Check for uninitialized components (sliders, paginated, layouts)
+      if (strongController.checkInit()) {
+        strongController.start();
+      }
+    }, strongController.config.universalTimer);
   },
 
   /**
    * Set up timeout
    */
   newTimeout: function () {
-      strongController.timeoutId = setTimeout(function tick () {
-        if (debugit) console.log('tick > checkInit', strongController.checkInit())
+    strongController.timeoutId = setTimeout(function tick () {
+      if (debugit) console.log('tick > checkInit', strongController.checkInit());
 
-        // Check for uninitialized components (sliders, paginated, layouts)
-        if (strongController.checkInit()) {
-          strongController.start()
-        }
-      }, strongController.config.observerTimer)
+      // Check for uninitialized components (sliders, paginated, layouts)
+      if (strongController.checkInit()) {
+        strongController.start();
+      }
+    }, strongController.config.observerTimer);
   },
 
   /**
    * Initialize controller.
    */
   init: function () {
-    jQuery(document).focus() // if dev console open
-    if (debugit) console.log('strongController init')
+    if (debugit) console.log('strongController init');
 
-    var settings = {}
+    // Get settings
+    var settings = {};
     if (typeof window.strongControllerParms !== 'undefined') {
-      settings = window.strongControllerParms
+      settings = window.strongControllerParms;
     } else {
-      if (debugit) console.log('settings not found')
+      if (debugit) console.log('settings not found');
     }
-    this.setup(settings)
-    if (debugit) console.log('config', this.config)
+
+    // Configure
+    this.setup(settings);
+    if (debugit) console.log('config', this.config);
+
+    /*
+     * Start on specific event
+     */
+    if ('documentReady' === this.config.initializeOn) {
+
+      jQuery(document).ready(function () {
+        if (debugit) console.log('document ready');
+        // Start components.
+        strongController.start();
+        // Listen.
+        strongController.listen();
+      });
+
+    } else { // Fail-safe
+
+      jQuery(window).on('load', function () {
+        if (debugit) console.log('window load');
+        // Start components.
+        strongController.start();
+        // Listen.
+        strongController.listen();
+      });
+
+    }
+
+    // Regardless of initializeOn setting, check for embeds in Masonry on window load.
+    jQuery(window).on('load', function () {
+      strongController.listenForIframeReady();
+    });
+
   },
 
   /**
    * Start components.
    */
-  start: function() {
-    if (debugit) console.log('start')
-    strongController.initSliders()
-    strongController.initPagers()
-    strongController.initLayouts()
-    strongController.initForm()
+  start: function () {
+    if (debugit) console.log('start');
+    strongController.initSliders();
+    strongController.initPagers();
+    strongController.initLayouts();
+    strongController.initForm();
+    strongController.initIframes();
   },
 
   /**
    * Listen.
    */
-  listen: function() {
-    if (debugit) console.log('listen')
+  listen: function () {
+    if (debugit) console.log('listen');
 
     switch (this.config.method) {
       case 'universal':
         // Set a timer to check for idle components.
-        this.newInterval()
-        break
+        this.newInterval();
+        break;
 
       case 'observer':
         // Observe a specific DOM element on a timer.
         // Calling start() here is too soon; the transition is not complete yet.
-        this.observer(document.getElementById(this.config.containerId), this.newTimeout)
-        break
+        this.observer(document.getElementById(this.config.containerId), this.newTimeout);
+        break;
 
       case 'event':
         // The theme/plugin uses an event emitter.
@@ -242,8 +294,8 @@ var strongController = {
         // @link https://wordpress.org/plugins/malinky-ajax-pagination/
         // event name = malinkyLoadPostsComplete
 
-        document.addEventListener(this.config.event, this.start)
-        break
+        document.addEventListener(this.config.event, this.start);
+        break;
 
       case 'script':
         // The theme/plugin uses a dispatcher.
@@ -253,29 +305,47 @@ var strongController = {
             // Barba
             // @link http://barbajs.org/
             if (typeof Barba === 'object' && Barba.hasOwnProperty('Dispatcher')) {
-              Barba.Dispatcher.on('transitionCompleted', this.start)
+              Barba.Dispatcher.on('transitionCompleted', this.start);
             }
-            break
+            break;
           default:
         }
-        break
+        break;
 
       default:
       // no Pjax support
     }
+  },
+
+  /**
+   * Listen.
+   */
+  listenForIframeReady: function () {
+    if (debugit) console.log('listenForIframeReady');
+
+    if (strongController.iframes.length && strongController.grids.length) {
+
+      strongController.iframes.ready(function () {
+        // still needs a moment to render
+        setTimeout(function () {
+          strongController.grids.masonry();
+          if (debugit) console.log('listenForIframeReady', 'timeout 1');
+        }, 1000);
+        // just in case
+        setTimeout(function () {
+          strongController.grids.masonry();
+          if (debugit) console.log('listenForIframeReady', 'timeout 2');
+        }, 2000);
+      });
+
+    } else {
+
+      if (debugit) console.log('listenForIframeReady', 'no iframes or Masonry found');
+
+    }
   }
 
-}
+};
 
-jQuery(document).ready(function ($) {
-
-  // Initialize controller.
-  strongController.init()
-
-  // Start components.
-  strongController.start()
-
-  // Listen.
-  strongController.listen()
-
-})
+// Initialize controller.
+strongController.init();

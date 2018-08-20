@@ -1,9 +1,9 @@
 === Google Doc Embedder ===
-Contributors: danlester, k3davis
+Contributors: danlester
 Tags: doc, docx, pdf, ppt, pptx, xls, office, powerpoint, google, document, embed
 Author URI: https://wordpress.org/plugins/google-document-embedder/
 Requires at least: 3.5
-Tested up to: 4.5
+Tested up to: 4.9
 Stable tag: trunk
 License: GPLv2 or later
 
@@ -13,13 +13,13 @@ Lets you embed PDF, MS Office, and many other file types in a web page using the
 
 Google Doc Embedder lets you embed several types of files into your WordPress pages using the free Google Docs Viewer - allowing inline viewing (and optional downloading) of a wide range of popular file types, with no Flash or PDF browser plug-ins required.
 
-> <strong>NOTE: Recent changes by Google to their viewer mean that some other plugins may be more suitable in some cases:</strong><br>
+> <strong>NOTE: Recent changes by Google to their viewer mean that some other plugins may be more suitable:</strong><br>
 > 
 > * If you are able to store your files in Google Drive, try the [Google Drive Embedder plugin](http://wp-glogin.com/wpgoogledoctodrive). This will be faster to display, and more reliable.
 > * To make it difficult for users to download the full PDF (the old 'enhanced mode'), please find out more about [our new plugin - PDF Embedder Secure](http://wp-pdf.com/secure/?utm_source=GDE%20Readme&utm_medium=wordpressorg&utm_campaign=Freemium).
 > * Mobile-friendly functionality for viewing PDFs is available in [PDF Embedder Premium](http://wp-pdf.com/premium/?utm_source=GDE%20Readme%20Premium&utm_medium=wordpressorg&utm_campaign=Freemium).
 > 
-> If this plugin works as you require then we will continue to support it assuming Google still provides the underlying Doc Viewer in its current form!
+> If this plugin works as you require then feel free to continue to use it, but please do not expect support beyond urgent security fixes. It is not guaranteed that Google will continue to offer or support their Document Viewer.
 
 = More about Google Doc Embedder =
 
@@ -63,6 +63,8 @@ Translations:
 * Turkish (tr\_TR) by [LettoBlog](http://profiles.wordpress.org/lettoblog "LettoBlog"), thanks!
 * Ukrainian (uk) by J&#243;zek, thanks!
 
+**Many thanks to the original author of the plugin, Kevin Davis.**
+
 == Installation ==
 
 1. Upload the entire `google-document-embedder` folder to the `/wp-content/plugins/` directory.
@@ -77,6 +79,10 @@ For basic manual instructions, please see the FAQ.
 Go to "GDE Settings" (under "Settings" in the admin panel) to change defaults, or override individually using the shortcode syntax in the FAQ.
 
 == Frequently Asked Questions ==
+
+= How can I get support for this plugin? =
+
+Because Google Document Viewer does not seem to be something that Google is fully committed to supporting, there will no longer be any active development of this plugin by the original author. You may use the support forum attached to this plugin on wordpress.org to post support questions, and active users are encouraged to help each other out where possible. However, the forum will not be monitored by any official development team. If you discover any security vulnerabilities please contact WordPress directly as usual.
 
 = Where can the files live? =
 The file to embed must first be publicly available somewhere on the internet, in order for Google to retrieve the document for conversion.
@@ -129,10 +135,6 @@ supported by the plug-in.
 
 If you are able to store your files in Google Drive, you may want to try the [Google Drive Embedder plugin](http://wp-glogin.com/wpgoogledoctodrive). This will be faster to display, and more reliable in that case.
 
-= Does it work in Multisite environments? =
-The plugin works on network installs, though it must be activated on a per-site basis (not network activated). There are no multisite
-specific features at this time, but it will function normally in this environment. If you use GDE in a multisite environment, I welcome your feedback on what functionality you would like to see.
-
 == Screenshots ==
 
 1. Default appearance of embedded viewer (cropped)
@@ -142,6 +144,22 @@ specific features at this time, but it will function normally in this environmen
 5. TinyMCE Editor integration
 
 == Changelog ==
+
+= 2.6.4 =
+
+Tidied up files that were no longer being used by the plugin, and simplified by removing profile editing. The extra legacy code caused a false-positive security alert and caused
+the plugin to be removed from the repository temporarily.
+
+= 2.6.2 =
+
+Additional checks to protect against XSS/CSRF vulnerability reported by Tristan Madani.
+
+Removed settings and profile import/export feature to reduce support and development requirements of this plugin.
+
+= 2.6.1 =
+
+Works with WP4.6.
+Fixed a potential cross-site security vulnerability.
 
 = 2.6 =
 
